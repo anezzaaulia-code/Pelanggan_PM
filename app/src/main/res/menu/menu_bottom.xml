@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navBeranda"
+        android:title="Beranda"
+        android:icon="@android:drawable/ic_menu_view" />
+
+    <item
+        android:id="@+id/navProduk"
+        android:title="Produk"
+        android:icon="@android:drawable/ic_menu_search" />
+
+    <item
+        android:id="@+id/navKeranjang"
+        android:title="Keranjang"
+        android:icon="@android:drawable/ic_menu_add" />
+
+    <item
+        android:id="@+id/navPesanan"
+        android:title="Pesanan"
+        android:icon="@android:drawable/ic_menu_agenda" />
+
+    <item
+        android:id="@+id/navProfil"
+        android:title="Profil"
+        android:icon="@android:drawable/ic_menu_myplaces" />
+</menu>
