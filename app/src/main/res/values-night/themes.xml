@@ -1,0 +1,13 @@
+<resources>
+    <style name="Theme.Pelanggan_PM" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/cream_primary</item>
+        <item name="colorPrimaryContainer">@color/cream_soft</item>
+        <item name="colorSecondary">@color/cream_primary_dark</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/cream_light</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowBackground">@color/bg_page</item>
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+</resources>
