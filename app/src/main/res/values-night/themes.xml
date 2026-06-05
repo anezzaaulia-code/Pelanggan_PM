@@ -1,8 +1,19 @@
 <resources>
+
     <style name="Theme.Pelanggan_PM" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/hijau_tahu</item>
-        <item name="colorSecondary">@color/kuning_tahu</item>
+        <item name="colorPrimary">@color/brand</item>
+        <item name="colorSecondary">@color/brand_dark</item>
+        <item name="colorTertiary">@color/brand_soft</item>
+
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/cream</item>
+        <item name="android:navigationBarColor">@color/card</item>
+        <item name="android:windowBackground">@color/bg</item>
     </style>
+
+    <style name="BottomNavIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
+
 </resources>

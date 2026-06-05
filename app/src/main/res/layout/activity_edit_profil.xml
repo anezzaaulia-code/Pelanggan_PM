@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7F3"
-    android:fillViewport="true">
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,29 +14,43 @@
         android:padding="18dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit Profil"
-            android:textColor="#285234"
-            android:textSize="30sp"
+            android:background="@drawable/bg_chip"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:text="👤 Edit Profil"
+            android:textColor="@color/brand_dark"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Perbarui data akun pembeli"
-            android:textColor="#7B8A7B"
-            android:textSize="14sp" />
+            android:layout_marginTop="10dp"
+            android:text="Perbarui data akun."
+            android:textColor="@color/brown"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Pastikan nama, email, dan nomor HP kamu sudah benar."
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E2E8DD"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/line"
             app:strokeWidth="1dp">
 
             <LinearLayout
@@ -45,80 +60,87 @@
                 android:padding="18dp">
 
                 <TextView
-                    android:text="Nama"
-                    android:textColor="#285234"
-                    android:textStyle="bold"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Nama"
+                    android:textColor="@color/brown"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtNama"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="8dp"
-                    android:background="#F5F7F3"
+                    android:background="@drawable/bg_input"
                     android:hint="Masukkan nama"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textColor="#222222" />
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
+                    android:textSize="16sp" />
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="Email"
-                    android:textColor="#285234"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/brown"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="8dp"
-                    android:background="#F5F7F3"
+                    android:background="@drawable/bg_input"
                     android:hint="Masukkan email"
                     android:inputType="textEmailAddress"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textColor="#222222" />
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
+                    android:textSize="16sp" />
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="Nomor HP"
-                    android:textColor="#285234"
-                    android:textStyle="bold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:textColor="@color/brown"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtTelepon"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="8dp"
-                    android:background="#F5F7F3"
+                    android:background="@drawable/bg_input"
                     android:hint="Masukkan nomor HP"
                     android:inputType="phone"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textColor="#222222" />
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
+                    android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSimpanProfil"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="22dp"
                     android:text="Simpan Profil"
                     android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/brown"
                     android:textStyle="bold"
-                    app:backgroundTint="#285234"
-                    app:cornerRadius="26dp"
+                    app:backgroundTint="@color/brand"
+                    app:cornerRadius="16dp"
                     app:elevation="0dp" />
 
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-
 </ScrollView>

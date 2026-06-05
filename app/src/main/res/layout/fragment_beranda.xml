@@ -3,90 +3,209 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7F3"
+    android:background="@drawable/bg_app"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="18dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="28dp">
 
-        <!-- HEADER TOKO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_primary"
+                android:gravity="center"
+                android:text="ST"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNamaToko"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SiTahu"
+                    android:textColor="@color/brown"
+                    android:textSize="19sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtJamToko"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tahu segar setiap hari"
+                    android:textColor="@color/muted"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnWhatsapp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="💬"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_dark"
+                android:textSize="18sp"
+                app:backgroundTint="@color/card"
+                app:cornerRadius="15dp"
+                app:elevation="3dp"
+                app:strokeColor="@color/line"
+                app:strokeWidth="1dp" />
+        </LinearLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#3E7B3B">
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="28dp"
+            app:cardElevation="6dp"
+            app:strokeColor="@color/line"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_hero"
                 android:orientation="vertical"
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/txtNamaToko"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TahuKu"
-                    android:textColor="#FFFFFF"
-                    android:textSize="28sp"
+                    android:background="@drawable/bg_chip"
+                    android:paddingStart="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="8dp"
+                    android:text="✨ Tahu segar siap pesan"
+                    android:textColor="@color/brand_dark"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:lineSpacingExtra="-2dp"
+                    android:text="Belanja tahu jadi lebih gampang."
+                    android:textColor="@color/brown"
+                    android:textSize="31sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtAlamatToko"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Alamat toko belum diisi"
-                    android:textColor="#E8F0E6"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="4dp"
+                    android:text="Pilih produk, masukin keranjang, checkout, lalu bayar pakai tunai atau QRIS. Simple, nggak ribet."
+                    android:textColor="@color/muted"
+                    android:textSize="13sp" />
 
-                <TextView
-                    android:id="@+id/txtJamToko"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="07:00"
-                    android:textColor="#E8F0E6"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLihatProduk"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_weight="1"
+                        android:text="Lihat Produk"
+                        android:textAllCaps="false"
+                        android:textColor="@color/brown"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/brand"
+                        app:cornerRadius="15dp"
+                        app:elevation="0dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnInfoToko"
+                        android:layout_width="0dp"
+                        android:layout_height="46dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:text="Info Toko"
+                        android:textAllCaps="false"
+                        android:textColor="@color/brand_dark"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/card"
+                        app:cornerRadius="15dp"
+                        app:elevation="0dp"
+                        app:strokeColor="@color/line"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- BUTTON WHATSAPP -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnWhatsapp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="16dp"
-            android:text="Hubungi WhatsApp Toko"
-            android:textAllCaps="false"
-            android:textColor="#3E3A20"
-            android:textStyle="bold"
-            app:backgroundTint="#F4C542"
-            app:cornerRadius="26dp"
-            app:elevation="0dp" />
-
-        <!-- JUDUL -->
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Produk Tahu Terbaru"
-            android:textColor="#476B2D"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
 
-        <!-- LIST PRODUK -->
+            <include layout="@layout/view_stat_produk" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Produk Favorit"
+                android:textColor="@color/brown"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Semua"
+                android:textColor="@color/brand_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProdukBeranda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="12dp"
             android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
-
 </ScrollView>

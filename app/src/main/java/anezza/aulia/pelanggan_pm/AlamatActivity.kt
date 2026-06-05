@@ -2,6 +2,7 @@ package anezza.aulia.pelanggan_pm
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.preference.PreferenceManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import anezza.aulia.pelanggan_pm.adapter.AlamatAdapter
 import anezza.aulia.pelanggan_pm.databinding.ActivityAlamatBinding
@@ -16,7 +18,6 @@ import anezza.aulia.pelanggan_pm.helper.ApiConfig
 import anezza.aulia.pelanggan_pm.helper.SessionManager
 import anezza.aulia.pelanggan_pm.model.Alamat
 import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
@@ -40,6 +41,11 @@ class AlamatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        window.statusBarColor = Color.parseColor("#FFF7E6")
+        window.navigationBarColor = Color.parseColor("#FFFDF7")
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
 
         Configuration.getInstance().load(
             applicationContext,
@@ -81,10 +87,15 @@ class AlamatActivity : AppCompatActivity() {
                     mapView: org.osmdroid.views.MapView?
                 ): Boolean {
                     if (e != null && mapView != null) {
-                        val point = mapView.projection.fromPixels(e.x.toInt(), e.y.toInt()) as GeoPoint
+                        val point = mapView.projection.fromPixels(
+                            e.x.toInt(),
+                            e.y.toInt()
+                        ) as GeoPoint
+
                         tambahMarker(point.latitude, point.longitude)
                         return true
                     }
+
                     return false
                 }
             }
@@ -149,7 +160,11 @@ class AlamatActivity : AppCompatActivity() {
                 )
             },
             { error ->
-                Toast.makeText(this, bacaError(error, "Gagal mengambil alamat"), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    bacaError(error, "Gagal mengambil alamat"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         ) {
             @Throws(AuthFailureError::class)
@@ -189,7 +204,12 @@ class AlamatActivity : AppCompatActivity() {
             ApiConfig.ADDRESSES,
             { response ->
                 val obj = JSONObject(response)
-                Toast.makeText(this, obj.optString("message", "Alamat berhasil disimpan"), Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(
+                    this,
+                    obj.optString("message", "Alamat berhasil disimpan"),
+                    Toast.LENGTH_SHORT
+                ).show()
 
                 b.edtNamaPenerima.text.clear()
                 b.edtTelepon.text.clear()
@@ -199,7 +219,11 @@ class AlamatActivity : AppCompatActivity() {
                 loadAlamat()
             },
             { error ->
-                Toast.makeText(this, bacaError(error, "Gagal menyimpan alamat"), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    bacaError(error, "Gagal menyimpan alamat"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         ) {
             override fun getParams(): MutableMap<String, String> {
@@ -228,11 +252,21 @@ class AlamatActivity : AppCompatActivity() {
             "${ApiConfig.ADDRESSES}/$id/main",
             { response ->
                 val obj = JSONObject(response)
-                Toast.makeText(this, obj.optString("message", "Alamat utama dipilih"), Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(
+                    this,
+                    obj.optString("message", "Alamat utama dipilih"),
+                    Toast.LENGTH_SHORT
+                ).show()
+
                 loadAlamat()
             },
             { error ->
-                Toast.makeText(this, bacaError(error, "Gagal memilih alamat utama"), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    bacaError(error, "Gagal memilih alamat utama"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         ) {
             @Throws(AuthFailureError::class)
@@ -250,11 +284,21 @@ class AlamatActivity : AppCompatActivity() {
             "${ApiConfig.ADDRESSES}/$id",
             { response ->
                 val obj = JSONObject(response)
-                Toast.makeText(this, obj.optString("message", "Alamat dihapus"), Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(
+                    this,
+                    obj.optString("message", "Alamat dihapus"),
+                    Toast.LENGTH_SHORT
+                ).show()
+
                 loadAlamat()
             },
             { error ->
-                Toast.makeText(this, bacaError(error, "Gagal menghapus alamat"), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    bacaError(error, "Gagal menghapus alamat"),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         ) {
             @Throws(AuthFailureError::class)
@@ -268,8 +312,14 @@ class AlamatActivity : AppCompatActivity() {
 
     private fun ambilLokasiSaatIni() {
         if (
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,

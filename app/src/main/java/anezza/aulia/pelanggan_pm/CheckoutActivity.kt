@@ -37,7 +37,6 @@ class CheckoutActivity : AppCompatActivity() {
         db = CartDbHelper(this)
         session = SessionManager(this)
 
-        setupSpinnerPembayaran()
         setupMetodePengambilan()
         tampilRingkasan()
         loadAlamat()
@@ -50,16 +49,6 @@ class CheckoutActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadAlamat()
-    }
-
-    private fun setupSpinnerPembayaran() {
-        val pembayaran = arrayOf("tunai", "qris")
-
-        b.spMetodeBayar.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            pembayaran
-        )
     }
 
     private fun setupMetodePengambilan() {
@@ -183,7 +172,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         val metodePengambilan = if (b.rbAmbil.isChecked) "ambil_toko" else "kurir_toko"
-        val metodePembayaran = b.spMetodeBayar.selectedItem.toString()
+        val metodePembayaran = if (b.rbQris.isChecked) "qris" else "tunai"
 
         var alamatId: Int? = null
 

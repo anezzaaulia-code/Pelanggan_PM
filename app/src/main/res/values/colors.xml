@@ -1,9 +1,23 @@
 <resources>
-    <color name="hijau_tahu">#3F6B3A</color>
-    <color name="hijau_muda">#EAF4E6</color>
-    <color name="kuning_tahu">#F6C344</color>
-    <color name="coklat_tahu">#8B5E34</color>
+    <color name="brand">#DFBA68</color>
+    <color name="brand_dark">#8A6321</color>
+    <color name="brand_soft">#FFF4D9</color>
+    <color name="cream">#FFF7E6</color>
+    <color name="cream_strong">#F8E2A5</color>
+    <color name="brown">#4B3412</color>
+    <color name="bg">#F6F2EA</color>
+    <color name="card">#FFFDF7</color>
+    <color name="muted">#6B7280</color>
+    <color name="line">#EADFCA</color>
+    <color name="red">#DC2626</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- alias lama biar file Kotlin/placeholder lama tetap aman -->
+    <color name="hijau_tahu">#8A6321</color>
+    <color name="hijau_muda">#FFF4D9</color>
+    <color name="kuning_tahu">#DFBA68</color>
+    <color name="coklat_tahu">#8A6321</color>
     <color name="putih">#FFFFFF</color>
-    <color name="abu">#F5F5F5</color>
-    <color name="hitam">#222222</color>
+    <color name="abu">#F6F2EA</color>
+    <color name="hitam">#4B3412</color>
 </resources>

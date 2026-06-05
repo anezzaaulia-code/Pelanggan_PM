@@ -3,52 +3,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF5EA"
+    android:background="@drawable/bg_app"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="18dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Belanja produk tahu"
-            android:textColor="#7B8A7B"
-            android:textSize="13sp"
+            android:background="@drawable/bg_chip"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:text="🛍️ Katalog Produk"
+            android:textColor="@color/brand_dark"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Daftar Produk"
-            android:textColor="#073D2B"
-            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:text="Pilih tahu yang mau kamu pesan."
+            android:textColor="@color/brown"
+            android:textSize="26sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:lineSpacingExtra="4dp"
+            android:text="Produknya dibuat card menurun biar enak dilihat di HP."
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="22dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/putih">
+            android:layout_height="58dp"
+            android:layout_marginTop="14dp"
+            app:cardBackgroundColor="@color/card"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="3dp"
+            app:strokeColor="@color/line"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="10dp">
+                android:paddingStart="14dp"
+                android:paddingEnd="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🔎"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <AutoCompleteTextView
                     android:id="@+id/actCari"
@@ -57,55 +74,29 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:hint="Cari tahu putih, tahu bakso..."
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
+                    android:hint="Cari produk tahu..."
                     android:singleLine="true"
-                    android:textColor="#073D2B"
-                    android:textColorHint="#91A099"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:backgroundTint="#FFD86F"
-                    android:gravity="center"
-                    android:text="🛒"
-                    android:textSize="22sp" />
-
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
-        <HorizontalScrollView
+        <Spinner
+            android:id="@+id/spinnerSort"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Spinner
-                    android:id="@+id/spinnerSort"
-                    android:layout_width="180dp"
-                    android:layout_height="45dp"
-                    android:backgroundTint="@color/putih"
-                    android:padding="8dp" />
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_input"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProduk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             android:nestedScrollingEnabled="false" />
-
     </LinearLayout>
-
 </ScrollView>
