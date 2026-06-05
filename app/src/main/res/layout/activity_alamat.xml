@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7F3"
-    android:fillViewport="true">
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,32 +13,44 @@
         android:orientation="vertical"
         android:padding="18dp">
 
-        <!-- HEADER -->
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alamat Saya"
-            android:textColor="#285234"
-            android:textSize="30sp"
+            android:background="@drawable/bg_chip"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:text="📍 Alamat Saya"
+            android:textColor="@color/brand_dark"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Tambahkan alamat untuk pengantaran Kurir Toko"
-            android:textColor="#7B8A7B"
-            android:textSize="14sp" />
+            android:layout_marginTop="10dp"
+            android:text="Atur lokasi pengiriman."
+            android:textColor="@color/brown"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-        <!-- MAP CARD -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Tambahkan alamat untuk pengantaran Kurir Toko."
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="260dp"
             android:layout_marginTop="18dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E2E8DD"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/line"
             app:strokeWidth="1dp">
 
             <FrameLayout
@@ -54,28 +67,26 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|start"
                     android:layout_margin="12dp"
-                    android:background="#DDEFE5"
+                    android:background="@drawable/bg_chip"
                     android:paddingStart="12dp"
                     android:paddingTop="6dp"
                     android:paddingEnd="12dp"
                     android:paddingBottom="6dp"
                     android:text="Tap maps untuk pilih titik"
-                    android:textColor="#285234"
+                    android:textColor="@color/brand_dark"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
             </FrameLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- KOORDINAT -->
         <TextView
             android:id="@+id/txtKoordinat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Latitude: - | Longitude: -"
-            android:textColor="#7B8A7B"
+            android:textColor="@color/muted"
             android:textSize="13sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -85,21 +96,20 @@
             android:layout_marginTop="12dp"
             android:text="Gunakan Lokasi Saya"
             android:textAllCaps="false"
-            android:textColor="#285234"
+            android:textColor="@color/brand_dark"
             android:textStyle="bold"
-            app:backgroundTint="#DDEFE5"
+            app:backgroundTint="@color/brand_soft"
             app:cornerRadius="26dp"
             app:elevation="0dp" />
 
-        <!-- FORM ALAMAT -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="@color/card"
             app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E2E8DD"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/line"
             app:strokeWidth="1dp">
 
             <LinearLayout
@@ -112,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Data Penerima"
-                    android:textColor="#285234"
+                    android:textColor="@color/brown"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -121,21 +131,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="Nama Penerima"
-                    android:textColor="#285234"
+                    android:textColor="@color/brown"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtNamaPenerima"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="8dp"
-                    android:background="#F5F7F3"
+                    android:background="@drawable/bg_input"
                     android:hint="Contoh: Martha"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textColor="#222222"
-                    android:textColorHint="#9BA79B"
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
                     android:textSize="14sp" />
 
                 <TextView
@@ -143,22 +153,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="Nomor HP"
-                    android:textColor="#285234"
+                    android:textColor="@color/brown"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtTelepon"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="8dp"
-                    android:background="#F5F7F3"
+                    android:background="@drawable/bg_input"
                     android:hint="Contoh: 081234567890"
                     android:inputType="phone"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:textColor="#222222"
-                    android:textColorHint="#9BA79B"
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
                     android:textSize="14sp" />
 
                 <TextView
@@ -166,22 +176,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="Alamat Lengkap"
-                    android:textColor="#285234"
+                    android:textColor="@color/brown"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtAlamatLengkap"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="96dp"
                     android:layout_marginTop="8dp"
-                    android:background="#F5F7F3"
+                    android:background="@drawable/bg_input"
                     android:gravity="top"
                     android:hint="Tulis alamat lengkap, patokan, RT/RW, kecamatan..."
-                    android:inputType="textMultiLine"
-                    android:padding="14dp"
-                    android:textColor="#222222"
-                    android:textColorHint="#9BA79B"
+                    android:paddingStart="14dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="12dp"
+                    android:textColor="@color/brown"
+                    android:textColorHint="@color/muted"
                     android:textSize="14sp" />
 
                 <CheckBox
@@ -189,35 +201,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:buttonTint="#285234"
+                    android:buttonTint="@color/brand_dark"
                     android:text="Jadikan alamat utama"
-                    android:textColor="#4F5B4A"
+                    android:textColor="@color/brown"
                     android:textSize="14sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSimpanAlamat"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="18dp"
                     android:text="Simpan Alamat"
                     android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/brown"
                     android:textStyle="bold"
-                    app:backgroundTint="#285234"
-                    app:cornerRadius="26dp"
+                    app:backgroundTint="@color/brand"
+                    app:cornerRadius="16dp"
                     app:elevation="0dp" />
 
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- DAFTAR ALAMAT -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Daftar Alamat"
-            android:textColor="#285234"
+            android:layout_marginTop="22dp"
+            android:text="Alamat Tersimpan"
+            android:textColor="@color/brown"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -229,5 +239,4 @@
             android:nestedScrollingEnabled="false" />
 
     </LinearLayout>
-
 </ScrollView>

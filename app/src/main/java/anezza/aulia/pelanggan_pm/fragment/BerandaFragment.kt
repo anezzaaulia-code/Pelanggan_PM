@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import anezza.aulia.pelanggan_pm.R
 import anezza.aulia.pelanggan_pm.adapter.ProdukAdapter
 import anezza.aulia.pelanggan_pm.databinding.FragmentBerandaBinding
 import anezza.aulia.pelanggan_pm.helper.ApiConfig
@@ -53,6 +54,18 @@ class BerandaFragment : Fragment() {
 
         if (listProduk.isEmpty()) {
             loadProduk()
+        }
+
+        b.btnLihatProduk.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameContainer, ProdukFragment())
+                .commit()
+        }
+
+        b.btnInfoToko.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameContainer, ProfilFragment())
+                .commit()
         }
 
         b.btnWhatsapp.setOnClickListener {

@@ -2,39 +2,50 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#EEF5EA"
+    android:background="@drawable/bg_app"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="18dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status dan riwayat"
-            android:textColor="#7B8A7B"
-            android:textSize="13sp"
+            android:background="@drawable/bg_chip"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:text="📦 Riwayat Pesanan"
+            android:textColor="@color/brand_dark"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pesanan"
-            android:textColor="#073D2B"
-            android:textSize="24sp"
+            android:layout_marginTop="10dp"
+            android:text="Status pesanan kamu."
+            android:textColor="@color/brown"
+            android:textSize="26sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Bagian ini buat tracking pesanan pembeli."
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPesanan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="16dp"
             android:nestedScrollingEnabled="false" />
-
     </LinearLayout>
-
 </ScrollView>

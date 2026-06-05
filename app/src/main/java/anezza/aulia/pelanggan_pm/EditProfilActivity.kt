@@ -1,8 +1,10 @@
 package anezza.aulia.pelanggan_pm
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import anezza.aulia.pelanggan_pm.databinding.ActivityEditProfilBinding
 import anezza.aulia.pelanggan_pm.helper.ApiConfig
 import anezza.aulia.pelanggan_pm.helper.SessionManager
@@ -19,6 +21,12 @@ class EditProfilActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        window.statusBarColor = Color.parseColor("#FFF7E6")
+        window.navigationBarColor = Color.parseColor("#FFFDF7")
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = true
+
         b = ActivityEditProfilBinding.inflate(layoutInflater)
         setContentView(b.root)
 

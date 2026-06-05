@@ -1,0 +1,21 @@
+<resources>
+    <color name="cream_primary">#DFBA68</color>
+    <color name="cream_primary_dark">#C99F45</color>
+    <color name="cream_soft">#3A2B16</color>
+    <color name="cream_light">#15110A</color>
+
+    <color name="brown_text">#F6D98B</color>
+    <color name="text_dark">#FFF8E8</color>
+    <color name="text_gray">#C8BFAE</color>
+    <color name="border_soft">#3A3328</color>
+    <color name="bg_page">#15110A</color>
+    <color name="white">#201A12</color>
+
+    <color name="hijau_tahu">#DFBA68</color>
+    <color name="hijau_muda">#3A2B16</color>
+    <color name="kuning_tahu">#DFBA68</color>
+    <color name="coklat_tahu">#F6D98B</color>
+    <color name="putih">#201A12</color>
+    <color name="abu">#15110A</color>
+    <color name="hitam">#FFF8E8</color>
+</resources>
