@@ -1,259 +1,341 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7F3"
-    android:fillViewport="true">
+    android:background="@color/cream_light">
+
+    <View
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="-65dp"
+        android:layout_marginEnd="-55dp"
+        android:alpha="0.55"
+        android:background="@drawable/bg_circle_gold_soft" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="18dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- JUDUL -->
-        <TextView
-            android:id="@+id/txtJudulCheckout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Checkout"
-            android:textColor="#285234"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtInfoKeranjang"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Keranjang kosong"
-            android:textColor="#7B8A7B"
-            android:textSize="14sp" />
-
-        <!-- RINGKASAN PRODUK -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="22dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E2E8DD"
-            app:strokeWidth="1dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="18dp">
+                android:paddingStart="18dp"
+                android:paddingTop="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="18dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ringkasan Produk"
-                    android:textColor="#285234"
-                    android:textSize="18sp"
+                    android:text="Selesaikan pesanan"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txtRingkasan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:lineSpacingExtra="4dp"
-                    android:text="Belum ada produk yang dipilih."
-                    android:textColor="#4F5B4A"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- METODE PENGAMBILAN -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="22dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E2E8DD"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Metode Pengambilan"
-                    android:textColor="#285234"
-                    android:textSize="18sp"
+                    android:layout_marginTop="4dp"
+                    android:text="Checkout"
+                    android:textColor="@color/text_dark"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
 
-                <RadioGroup
-                    android:id="@+id/rgMetode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="vertical">
-
-                    <RadioButton
-                        android:id="@+id/rbAmbil"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#3E7B3B"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="Ambil di Toko"
-                        android:textColor="#333333"
-                        android:textSize="15sp" />
-
-                    <RadioButton
-                        android:id="@+id/rbKurir"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="#3E7B3B"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:text="Kurir Toko"
-                        android:textColor="#333333"
-                        android:textSize="15sp" />
-
-                </RadioGroup>
-
                 <TextView
-                    android:id="@+id/txtAlamatInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Alamat toko akan digunakan untuk metode Ambil di Toko."
-                    android:textColor="#6E776A"
-                    android:textSize="14sp" />
-
-                <Spinner
-                    android:id="@+id/spAlamat"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="12dp"
-                    android:background="#F5F7F3"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:visibility="gone" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTambahAlamat"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="12dp"
-                    android:text="Tambah Alamat"
-                    android:textAllCaps="false"
-                    android:textColor="#285234"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:backgroundTint="#DDEFE5"
-                    app:cornerRadius="25dp"
-                    app:elevation="0dp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- METODE PEMBAYARAN -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="22dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#E2E8DD"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Metode Pembayaran"
-                    android:textColor="#285234"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/spMetodeBayar"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="12dp"
-                    android:background="#F5F7F3"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp" />
-
-                <CheckBox
-                    android:id="@+id/cbSetuju"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:buttonTint="#3E7B3B"
-                    android:text="Saya setuju pesanan diproses sesuai data checkout"
-                    android:textColor="#4F5B4A"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- TOTAL PEMBAYARAN -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="#285234"
-            app:cardCornerRadius="22dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Total Pembayaran"
-                    android:textColor="#DDEFE5"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/txtTotal"
+                    android:id="@+id/txtInfoKeranjang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Rp0"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:text="Produk siap di-checkout"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp" />
+
+                <!-- Ringkasan Produk -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="26dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/border_soft"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Ringkasan Pesanan"
+                            android:textColor="@color/text_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtRingkasan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_note_box"
+                            android:lineSpacingExtra="4dp"
+                            android:padding="14dp"
+                            android:text="Belum ada produk yang dipilih."
+                            android:textColor="@color/text_gray"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Metode Pengambilan -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="26dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/border_soft"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Metode Pengambilan"
+                            android:textColor="@color/text_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:id="@+id/rgMetode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbAmbil"
+                                android:layout_width="match_parent"
+                                android:layout_height="58dp"
+                                android:background="@drawable/bg_payment_option"
+                                android:buttonTint="@color/cream_primary_dark"
+                                android:checked="true"
+                                android:paddingStart="14dp"
+                                android:paddingEnd="14dp"
+                                android:text="Ambil di Toko"
+                                android:textColor="@color/text_dark"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <RadioButton
+                                android:id="@+id/rbKurir"
+                                android:layout_width="match_parent"
+                                android:layout_height="58dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/bg_payment_option"
+                                android:buttonTint="@color/cream_primary_dark"
+                                android:paddingStart="14dp"
+                                android:paddingEnd="14dp"
+                                android:text="Kurir Toko"
+                                android:textColor="@color/text_dark"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </RadioGroup>
+
+                        <TextView
+                            android:id="@+id/txtAlamatInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_note_box"
+                            android:lineSpacingExtra="3dp"
+                            android:padding="14dp"
+                            android:text="Alamat toko akan digunakan untuk metode Ambil di Toko. Tidak ada biaya kurir."
+                            android:textColor="@color/text_gray"
+                            android:textSize="14sp" />
+
+                        <Spinner
+                            android:id="@+id/spAlamat"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_input_cream"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnTambahAlamat"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="12dp"
+                            android:text="Tambah / Kelola Alamat"
+                            android:textAllCaps="false"
+                            android:textColor="@color/brown_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:backgroundTint="@color/cream_soft"
+                            app:cornerRadius="18dp"
+                            app:elevation="0dp"
+                            app:strokeColor="@color/cream_primary"
+                            app:strokeWidth="1dp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Metode Pembayaran -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="26dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/border_soft"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Metode Pembayaran"
+                            android:textColor="@color/text_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/spMetodeBayar"
+                            android:layout_width="match_parent"
+                            android:layout_height="54dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_input_cream"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Pembayaran tersedia: Tunai dan QRIS."
+                            android:textColor="@color/text_gray"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Persetujuan -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="@color/cream_soft"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/cream_primary"
+                    app:strokeWidth="1dp">
+
+                    <CheckBox
+                        android:id="@+id/cbSetuju"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/cream_primary_dark"
+                        android:padding="16dp"
+                        android:text="Saya sudah mengecek pesanan dan setuju membuat pesanan."
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- Bottom Total -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="10dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="18dp"
+                android:paddingTop="14dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="18dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total Pembayaran"
+                        android:textColor="@color/text_gray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/txtTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp0"
+                        android:textColor="@color/brown_text"
+                        android:textSize="23sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnBuatPesanan"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="18dp"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="14dp"
                     android:text="Buat Pesanan"
                     android:textAllCaps="false"
-                    android:textColor="#2D2A18"
+                    android:textColor="@color/text_dark"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#F4C542"
-                    app:cornerRadius="26dp"
+                    app:backgroundTint="@color/cream_primary"
+                    app:cornerRadius="20dp"
                     app:elevation="0dp" />
 
             </LinearLayout>
@@ -262,4 +344,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</FrameLayout>

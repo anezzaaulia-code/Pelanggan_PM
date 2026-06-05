@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.card.MaterialCardView
 import anezza.aulia.pelanggan_pm.AlamatActivity
@@ -15,6 +17,7 @@ import anezza.aulia.pelanggan_pm.UlasanActivity
 import anezza.aulia.pelanggan_pm.VideoTokoActivity
 import anezza.aulia.pelanggan_pm.databinding.FragmentProfilBinding
 import anezza.aulia.pelanggan_pm.helper.SessionManager
+import anezza.aulia.pelanggan_pm.helper.ThemeHelper
 
 class ProfilFragment : Fragment() {
 
@@ -22,6 +25,7 @@ class ProfilFragment : Fragment() {
     private val b get() = _b!!
 
     private lateinit var session: SessionManager
+    private lateinit var txtTemaAktif: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +40,7 @@ class ProfilFragment : Fragment() {
         super.onResume()
         if (::session.isInitialized) {
             tampilProfil()
+            tampilTemaAktif()
         }
     }
 
@@ -47,7 +52,11 @@ class ProfilFragment : Fragment() {
         val menuAlamat = view.findViewById<MaterialCardView>(R.id.menuAlamat)
         val menuUlasan = view.findViewById<MaterialCardView>(R.id.menuUlasan)
         val menuVideo = view.findViewById<MaterialCardView>(R.id.menuVideo)
+        val menuTema = view.findViewById<MaterialCardView>(R.id.menuTema)
         val menuLogout = view.findViewById<MaterialCardView>(R.id.menuLogout)
+
+        txtTemaAktif = view.findViewById(R.id.txtTemaAktif)
+        tampilTemaAktif()
 
         menuEditProfil.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfilActivity::class.java))
@@ -63,6 +72,10 @@ class ProfilFragment : Fragment() {
 
         menuVideo.setOnClickListener {
             startActivity(Intent(requireContext(), VideoTokoActivity::class.java))
+        }
+
+        menuTema.setOnClickListener {
+            tampilDialogTema()
         }
 
         menuLogout.setOnClickListener {
@@ -85,6 +98,44 @@ class ProfilFragment : Fragment() {
         b.txtEmailProfil.text = email.ifEmpty { "-" }
         b.txtNoHpProfil.text = telepon.ifEmpty { "-" }
         b.txtInisialProfil.text = nama.firstOrNull()?.uppercase() ?: "P"
+    }
+
+    private fun tampilTemaAktif() {
+        if (!::txtTemaAktif.isInitialized) return
+
+        txtTemaAktif.text = when (ThemeHelper.getTheme(requireContext())) {
+            ThemeHelper.THEME_LIGHT -> "Light Mode"
+            ThemeHelper.THEME_DARK -> "Dark Mode"
+            ThemeHelper.THEME_SYSTEM -> "Ikuti Sistem"
+            else -> "Light Mode"
+        }
+    }
+
+    private fun tampilDialogTema() {
+        val pilihan = arrayOf("Light Mode", "Dark Mode", "Ikuti Sistem")
+
+        val checkedItem = when (ThemeHelper.getTheme(requireContext())) {
+            ThemeHelper.THEME_LIGHT -> 0
+            ThemeHelper.THEME_DARK -> 1
+            ThemeHelper.THEME_SYSTEM -> 2
+            else -> 0
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Pilih Tema Aplikasi")
+            .setSingleChoiceItems(pilihan, checkedItem) { dialog, which ->
+                val theme = when (which) {
+                    0 -> ThemeHelper.THEME_LIGHT
+                    1 -> ThemeHelper.THEME_DARK
+                    else -> ThemeHelper.THEME_SYSTEM
+                }
+
+                ThemeHelper.saveTheme(requireContext(), theme)
+                tampilTemaAktif()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Batal", null)
+            .show()
     }
 
     override fun onDestroyView() {

@@ -55,11 +55,13 @@ class CheckoutActivity : AppCompatActivity() {
     private fun setupSpinnerPembayaran() {
         val pembayaran = arrayOf("tunai", "qris")
 
-        b.spMetodeBayar.adapter = ArrayAdapter(
+        val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_dropdown_item,
+            android.R.layout.simple_spinner_item,
             pembayaran
         )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        b.spMetodeBayar.adapter = adapter
     }
 
     private fun setupMetodePengambilan() {

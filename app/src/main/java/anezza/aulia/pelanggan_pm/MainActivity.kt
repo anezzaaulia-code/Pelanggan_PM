@@ -13,37 +13,74 @@ import anezza.aulia.pelanggan_pm.fragment.PesananFragment
 import anezza.aulia.pelanggan_pm.fragment.ProdukFragment
 import anezza.aulia.pelanggan_pm.fragment.ProfilFragment
 import anezza.aulia.pelanggan_pm.helper.SessionManager
+import anezza.aulia.pelanggan_pm.helper.ThemeHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityMainBinding
     private lateinit var session: SessionManager
 
+    private val berandaFragment = BerandaFragment()
+    private val produkFragment = ProdukFragment()
+    private val keranjangFragment = KeranjangFragment()
+    private val pesananFragment = PesananFragment()
+    private val profilFragment = ProfilFragment()
+
+    private var activeFragment: Fragment = berandaFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeHelper.applyTheme(this)
         super.onCreate(savedInstanceState)
+
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
 
         session = SessionManager(this)
 
-        openFragment(BerandaFragment())
+        setupFragments()
+        setupBottomNavigation()
+    }
+
+    private fun setupFragments() {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frameContainer, profilFragment, "profil")
+            .hide(profilFragment)
+            .add(R.id.frameContainer, pesananFragment, "pesanan")
+            .hide(pesananFragment)
+            .add(R.id.frameContainer, keranjangFragment, "keranjang")
+            .hide(keranjangFragment)
+            .add(R.id.frameContainer, produkFragment, "produk")
+            .hide(produkFragment)
+            .add(R.id.frameContainer, berandaFragment, "beranda")
+            .commit()
+
+        activeFragment = berandaFragment
+    }
+
+    private fun setupBottomNavigation() {
+        b.bottomNavigation.selectedItemId = R.id.navBeranda
 
         b.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.navBeranda -> openFragment(BerandaFragment())
-                R.id.navProduk -> openFragment(ProdukFragment())
-                R.id.navKeranjang -> openFragment(KeranjangFragment())
-                R.id.navPesanan -> openFragment(PesananFragment())
-                R.id.navProfil -> openFragment(ProfilFragment())
+                R.id.navBeranda -> showFragment(berandaFragment)
+                R.id.navProduk -> showFragment(produkFragment)
+                R.id.navKeranjang -> showFragment(keranjangFragment)
+                R.id.navPesanan -> showFragment(pesananFragment)
+                R.id.navProfil -> showFragment(profilFragment)
             }
             true
         }
     }
 
-    private fun openFragment(fragment: Fragment) {
+    private fun showFragment(fragment: Fragment) {
+        if (fragment == activeFragment) return
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frameContainer, fragment)
+            .hide(activeFragment)
+            .show(fragment)
             .commit()
+
+        activeFragment = fragment
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -56,7 +93,9 @@ class MainActivity : AppCompatActivity() {
             R.id.menuRefresh -> recreate()
             R.id.menuLogout -> {
                 session.logout()
-                startActivity(Intent(this, LoginActivity::class.java))
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
         }

@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg_page">
 
     <FrameLayout
         android:id="@+id/frameContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/abu" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="78dp"
+        android:background="@color/bg_page" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/putih"
-        app:itemIconTint="@color/hijau_tahu"
-        app:itemTextColor="@color/hijau_tahu"
+        android:layout_height="78dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_bottom_nav"
+        android:elevation="12dp"
+        app:itemActiveIndicatorStyle="@null"
+        app:itemIconTint="@color/cream_primary_dark"
+        app:itemTextColor="@color/brown_text"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_bottom" />
 
-</LinearLayout>
+</FrameLayout>

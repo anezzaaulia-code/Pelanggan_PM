@@ -1,226 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7F3"
-    android:fillViewport="true">
+    android:background="@color/cream_light">
 
-    <LinearLayout
+    <View
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="-70dp"
+        android:layout_marginEnd="-55dp"
+        android:alpha="0.55"
+        android:background="@drawable/bg_circle_gold_soft" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
-        <!-- GAMBAR -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#EEF1D9">
-
-            <ImageView
-                android:id="@+id/imgProduk"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="Gambar produk"
-                android:scaleType="centerCrop" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- INFO PRODUK -->
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#FFFFFF">
+            android:orientation="vertical"
+            android:paddingStart="18dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="22dp">
 
-            <LinearLayout
+            <!-- Gambar produk -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="245dp"
+                app:cardBackgroundColor="@color/cream_soft"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/cream_primary"
+                app:strokeWidth="1dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-40dp"
+                        android:layout_marginEnd="-30dp"
+                        android:alpha="0.35"
+                        android:background="@drawable/bg_circle_gold" />
+
+                    <TextView
+                        android:layout_width="92dp"
+                        android:layout_height="92dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="🥢"
+                        android:textSize="54sp" />
+
+                    <ImageView
+                        android:id="@+id/imgProduk"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0"
+                        android:contentDescription="Gambar produk"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_badge_gold"
+                        android:gravity="center"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:text="Produk Tahu"
+                        android:textColor="@color/text_dark"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Info produk -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/border_soft"
+                app:strokeWidth="1dp">
 
-                <TextView
-                    android:id="@+id/txtNama"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tahu Kuning"
-                    android:textColor="#285234"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtHarga"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Rp2.000,00"
-                    android:textColor="#B8782C"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtStok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="Stok: 0 Pack"
-                    android:textColor="#4F5B4A"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/txtIsi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Isi per satuan: 6"
-                    android:textColor="#4F5B4A"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/txtBerat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Berat: 500.0"
-                    android:textColor="#4F5B4A"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/txtMasaSimpan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Masa simpan: 7 hari"
-                    android:textColor="#4F5B4A"
-                    android:textSize="14sp" />
-
-                <!-- INPUT JUMLAH -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:text="Jumlah beli"
-                    android:textColor="#285234"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/edtJumlah"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#F7F7F7"
-                    android:gravity="center_vertical"
-                    android:hint="Masukkan jumlah"
-                    android:inputType="number"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="1"
-                    android:textColor="#222222"
-                    android:textSize="15sp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
 
-                <!-- TOMBOL -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTambahKeranjang"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Tambah ke Keranjang"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    app:backgroundTint="#3E7B3B"
-                    app:cornerRadius="26dp"
-                    app:elevation="0dp" />
+                    <TextView
+                        android:id="@+id/txtNama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tahu Kuning"
+                        android:textColor="@color/text_dark"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnBeliSekarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="12dp"
-                    android:text="Beli Sekarang"
-                    android:textAllCaps="false"
-                    android:textColor="#3E3A20"
-                    android:textStyle="bold"
-                    app:backgroundTint="#F4C542"
-                    app:cornerRadius="26dp"
-                    app:elevation="0dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/txtHarga"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Rp2.000,00"
+                        android:textColor="@color/brown_text"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-        <!-- DESKRIPSI -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#FFFFFF">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_input_cream"
+                        android:padding="14dp">
 
-            <LinearLayout
+                        <TextView
+                            android:id="@+id/txtStok"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Stok: 0 Pack"
+                            android:textColor="@color/text_dark"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtIsi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Isi per satuan: 6"
+                            android:textColor="@color/text_gray"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtBerat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Berat: 500.0"
+                            android:textColor="@color/text_gray"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtMasaSimpan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Masa simpan: 7 hari"
+                            android:textColor="@color/text_gray"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Jumlah beli"
+                        android:textColor="@color/text_dark"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/edtJumlah"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_input_cream"
+                        android:gravity="center_vertical"
+                        android:hint="Masukkan jumlah"
+                        android:inputType="number"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="1"
+                        android:textColor="@color/text_dark"
+                        android:textColorHint="@color/text_gray"
+                        android:textSize="15sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTambahKeranjang"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_marginTop="18dp"
+                        android:text="Tambah ke Keranjang"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_dark"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/cream_primary"
+                        app:cornerRadius="20dp"
+                        app:elevation="0dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBeliSekarang"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Beli Sekarang"
+                        android:textAllCaps="false"
+                        android:textColor="@color/brown_text"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/cream_soft"
+                        app:cornerRadius="20dp"
+                        app:elevation="0dp"
+                        app:strokeColor="@color/cream_primary"
+                        app:strokeWidth="1dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Deskripsi -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/border_soft"
+                app:strokeWidth="1dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Deskripsi"
-                    android:textColor="#285234"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtDeskripsi"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="tahu kuning aksksksksksksks"
-                    android:textColor="#444444"
-                    android:textSize="14sp" />
+                    android:orientation="vertical"
+                    android:padding="18dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Saran penyimpanan"
-                    android:textColor="#285234"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Deskripsi"
+                        android:textColor="@color/text_dark"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtSaranPenyimpanan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="suhu ruang"
-                    android:textColor="#444444"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/txtDeskripsi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Deskripsi produk"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="3dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Saran penyajian"
-                    android:textColor="#285234"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Saran penyimpanan"
+                        android:textColor="@color/text_dark"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtSaranPenyajian"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="digodok"
-                    android:textColor="#444444"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/txtSaranPenyimpanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Simpan di tempat sejuk"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="3dp" />
 
-    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Saran penyajian"
+                        android:textColor="@color/text_dark"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
 
-</ScrollView>
+                    <TextView
+                        android:id="@+id/txtSaranPenyajian"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Goreng atau olah sesuai selera"
+                        android:textColor="@color/text_gray"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="3dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

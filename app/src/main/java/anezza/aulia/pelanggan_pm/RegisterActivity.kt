@@ -8,12 +8,14 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 import anezza.aulia.pelanggan_pm.databinding.ActivityRegisterBinding
 import anezza.aulia.pelanggan_pm.helper.ApiConfig
+import anezza.aulia.pelanggan_pm.helper.ThemeHelper
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemeHelper.applyTheme(this)
         super.onCreate(savedInstanceState)
         b = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(b.root)

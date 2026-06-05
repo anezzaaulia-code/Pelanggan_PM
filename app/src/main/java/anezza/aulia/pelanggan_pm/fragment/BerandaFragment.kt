@@ -22,7 +22,12 @@ class BerandaFragment : Fragment() {
     private val b get() = _b!!
 
     private val listProduk = ArrayList<Produk>()
+    private var adapterProduk: ProdukAdapter? = null
+
     private var nomorWa = ""
+    private var sedangLoadStore = false
+    private var sedangLoadProduk = false
+    private var storeSudahLoad = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +41,19 @@ class BerandaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        b.rvProdukBeranda.layoutManager = LinearLayoutManager(requireContext())
+        b.rvProdukBeranda.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        loadStore()
-        loadProduk()
+        adapterProduk = ProdukAdapter(requireContext(), listProduk)
+        b.rvProdukBeranda.adapter = adapterProduk
+
+        if (!storeSudahLoad) {
+            loadStore()
+        }
+
+        if (listProduk.isEmpty()) {
+            loadProduk()
+        }
 
         b.btnWhatsapp.setOnClickListener {
             if (nomorWa.isNotEmpty()) {
@@ -54,22 +68,62 @@ class BerandaFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // Jangan reload tiap balik tab.
+        // Cukup load kalau data belum ada.
+        if (_b != null && isAdded && listProduk.isEmpty()) {
+            loadProduk()
+        }
+
+        if (_b != null && isAdded && !storeSudahLoad) {
+            loadStore()
+        }
+    }
+
     private fun loadStore() {
+        if (_b == null || !isAdded) return
+        if (sedangLoadStore) return
+
+        sedangLoadStore = true
+
         val request = StringRequest(
             ApiConfig.STORE,
             { response ->
-                val data = JSONObject(response).getJSONObject("data")
+                sedangLoadStore = false
 
-                b.txtNamaToko.text = data.optString("nama", "TahuKu")
-                b.txtAlamatToko.text = data.optString("alamat", "Alamat toko belum diisi")
-                b.txtJamToko.text = data.optString("jam_buka", "07:00")
+                if (_b == null || !isAdded) return@StringRequest
 
-                nomorWa = data.optString("telepon", "")
+                try {
+                    val data = JSONObject(response).optJSONObject("data")
+
+                    b.txtNamaToko.text = data?.optString("nama", "TahuKu") ?: "TahuKu"
+                    b.txtAlamatToko.text = data?.optString("alamat", "Alamat toko belum diisi")
+                        ?: "Alamat toko belum diisi"
+                    b.txtJamToko.text = data?.optString("jam_buka", "07:00") ?: "07:00"
+
+                    nomorWa = data?.optString("telepon", "") ?: ""
+                    storeSudahLoad = true
+
+                } catch (e: Exception) {
+                    // Pakai default, jangan crash.
+                    b.txtNamaToko.text = "TahuKu"
+                    b.txtAlamatToko.text = "Alamat toko belum diisi"
+                    b.txtJamToko.text = "07:00"
+                    nomorWa = ""
+                }
             },
             {
+                sedangLoadStore = false
+
+                if (_b == null || !isAdded) return@StringRequest
+
+                // Default tetap tampil.
                 b.txtNamaToko.text = "TahuKu"
                 b.txtAlamatToko.text = "Alamat toko belum diisi"
                 b.txtJamToko.text = "07:00"
+                nomorWa = ""
             }
         )
 
@@ -77,40 +131,63 @@ class BerandaFragment : Fragment() {
     }
 
     private fun loadProduk() {
+        if (_b == null || !isAdded) return
+        if (sedangLoadProduk) return
+
+        sedangLoadProduk = true
+
         val request = StringRequest(
             ApiConfig.PRODUCTS + "?per_page=5",
             { response ->
-                listProduk.clear()
+                sedangLoadProduk = false
 
-                val obj = JSONObject(response)
-                val data = obj.getJSONObject("data")
-                val arr = data.getJSONArray("data")
+                if (_b == null || !isAdded) return@StringRequest
 
-                for (i in 0 until arr.length()) {
-                    val o = arr.getJSONObject(i)
+                try {
+                    val produkBaru = ArrayList<Produk>()
 
-                    listProduk.add(
-                        Produk(
-                            id = o.getInt("id"),
-                            nama = o.optString("nama", "-"),
-                            harga = o.optDouble("harga", 0.0),
-                            stok = o.optInt("stok", 0),
-                            satuan = o.optString("satuan", ""),
-                            isiPerSatuan = o.optInt("isi_per_satuan", 0),
-                            berat = o.optDouble("berat", 0.0),
-                            gambarUtama = o.optString("gambar_utama", ""),
-                            deskripsi = null,
-                            masaSimpan = null,
-                            saranPenyimpanan = null,
-                            saranPenyajian = null
-                        )
-                    )
+                    val obj = JSONObject(response)
+                    val data = obj.optJSONObject("data")
+                    val arr = data?.optJSONArray("data")
+
+                    if (arr != null) {
+                        for (i in 0 until arr.length()) {
+                            val o = arr.getJSONObject(i)
+
+                            produkBaru.add(
+                                Produk(
+                                    id = o.optInt("id", 0),
+                                    nama = o.optString("nama", "-"),
+                                    harga = o.optDouble("harga", 0.0),
+                                    stok = o.optInt("stok", 0),
+                                    satuan = o.optString("satuan", ""),
+                                    isiPerSatuan = o.optInt("isi_per_satuan", 0),
+                                    berat = o.optDouble("berat", 0.0),
+                                    gambarUtama = o.optString("gambar_utama", ""),
+                                    deskripsi = null,
+                                    masaSimpan = null,
+                                    saranPenyimpanan = null,
+                                    saranPenyajian = null
+                                )
+                            )
+                        }
+                    }
+
+                    // Ganti data setelah request sukses.
+                    listProduk.clear()
+                    listProduk.addAll(produkBaru)
+                    adapterProduk?.notifyDataSetChanged()
+
+                } catch (e: Exception) {
+                    // Jangan clear data lama.
                 }
-
-                b.rvProdukBeranda.adapter = ProdukAdapter(requireContext(), listProduk)
             },
             {
-                // Kalau gagal, biarkan kosong dulu.
+                sedangLoadProduk = false
+
+                if (_b == null || !isAdded) return@StringRequest
+
+                // Jangan clear data lama saat gagal.
             }
         )
 

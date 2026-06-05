@@ -1,8 +1,0 @@
-<resources>
-    <style name="Theme.Pelanggan_PM" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/hijau_tahu</item>
-        <item name="colorSecondary">@color/kuning_tahu</item>
-        <item name="android:fontFamily">sans</item>
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-</resources>
