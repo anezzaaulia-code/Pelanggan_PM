@@ -1,6 +1,8 @@
 package anezza.aulia.pelanggan_pm.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +11,12 @@ import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import anezza.aulia.pelanggan_pm.R
 import anezza.aulia.pelanggan_pm.adapter.ProdukAdapter
 import anezza.aulia.pelanggan_pm.databinding.FragmentProdukBinding
 import anezza.aulia.pelanggan_pm.helper.ApiConfig
 import anezza.aulia.pelanggan_pm.model.Produk
+import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
@@ -30,6 +34,22 @@ class ProdukFragment : Fragment() {
     private var sudahSetupSpinner = false
     private var keywordTerakhir = ""
     private var sortTerakhir = "terbaru"
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val sortLabel = arrayOf(
+        "Terbaru",
+        "Harga Terendah",
+        "Harga Tertinggi",
+        "Terlaris"
+    )
+
+    private val sortValue = arrayOf(
+        "terbaru",
+        "harga_terendah",
+        "harga_tertinggi",
+        "terlaris"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,28 +71,25 @@ class ProdukFragment : Fragment() {
         setupSpinnerSort()
         setupSearch()
 
-        loadProduk(forceRefresh = listProduk.isEmpty())
+        loadProduk(forceRefresh = true)
     }
 
     override fun onResume() {
         super.onResume()
 
-        // Jangan reload setiap balik dari Keranjang.
-        // Reload cuma kalau list masih kosong.
         if (_b != null && isAdded && listProduk.isEmpty()) {
             loadProduk(forceRefresh = true)
         }
     }
 
     private fun setupSpinnerSort() {
-        val sortList = arrayOf("terbaru", "harga_terendah", "harga_tertinggi", "terlaris")
-
         val sortAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
-            sortList
+            R.layout.item_spinner_sort,
+            sortLabel
         )
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        sortAdapter.setDropDownViewResource(R.layout.item_spinner_sort)
 
         b.spinnerSort.adapter = sortAdapter
 
@@ -83,16 +100,16 @@ class ProdukFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                val sortSekarang = b.spinnerSort.selectedItem?.toString() ?: "terbaru"
+                val value = sortValue.getOrElse(position) { "terbaru" }
 
                 if (!sudahSetupSpinner) {
                     sudahSetupSpinner = true
-                    sortTerakhir = sortSekarang
+                    sortTerakhir = value
                     return
                 }
 
-                if (sortSekarang != sortTerakhir) {
-                    sortTerakhir = sortSekarang
+                if (value != sortTerakhir) {
+                    sortTerakhir = value
                     loadProduk(forceRefresh = true)
                 }
             }
@@ -103,86 +120,96 @@ class ProdukFragment : Fragment() {
 
     private fun setupSearch() {
         b.actCari.doAfterTextChanged {
-            if (_b == null || !isAdded) return@doAfterTextChanged
+            handler.removeCallbacksAndMessages(null)
 
-            val keywordSekarang = b.actCari.text.toString().trim()
+            handler.postDelayed({
+                if (_b == null || !isAdded) return@postDelayed
 
-            if (keywordSekarang != keywordTerakhir) {
-                keywordTerakhir = keywordSekarang
-                loadProduk(forceRefresh = true)
-            }
+                val keywordSekarang = b.actCari.text.toString().trim()
+
+                if (keywordSekarang != keywordTerakhir) {
+                    keywordTerakhir = keywordSekarang
+                    loadProduk(forceRefresh = true)
+                }
+            }, 450)
         }
     }
 
     private fun loadProduk(forceRefresh: Boolean = false) {
         if (_b == null || !isAdded) return
         if (sedangLoad) return
-
-        // Kalau data sudah ada dan tidak dipaksa refresh, jangan load ulang.
         if (!forceRefresh && listProduk.isNotEmpty()) return
 
         sedangLoad = true
 
-        val q = URLEncoder.encode(b.actCari.text.toString().trim(), "UTF-8")
-        val sort = b.spinnerSort.selectedItem?.toString() ?: "terbaru"
+        val keyword = b.actCari.text.toString().trim()
+        val q = URLEncoder.encode(keyword, "UTF-8")
+
+        val sortPosition = b.spinnerSort.selectedItemPosition.takeIf { it >= 0 } ?: 0
+        val sort = sortValue.getOrElse(sortPosition) { sortTerakhir }
 
         val url = "${ApiConfig.PRODUCTS}?q=$q&sort=$sort&per_page=50"
 
         val request = StringRequest(
+            Request.Method.GET,
             url,
             { response ->
                 sedangLoad = false
 
-                if (_b == null || !isAdded) return@StringRequest
+                if (_b != null && isAdded) {
+                    try {
+                        val produkBaru = ArrayList<Produk>()
 
-                try {
-                    val produkBaru = ArrayList<Produk>()
+                        val obj = JSONObject(response)
+                        val data = obj.optJSONObject("data")
+                        val arr = data?.optJSONArray("data")
 
-                    val obj = JSONObject(response)
-                    val data = obj.optJSONObject("data")
-                    val arr = data?.optJSONArray("data")
+                        if (arr != null) {
+                            for (i in 0 until arr.length()) {
+                                val o = arr.getJSONObject(i)
 
-                    if (arr != null) {
-                        for (i in 0 until arr.length()) {
-                            val o = arr.getJSONObject(i)
+                                val masaSimpanValue: Int? =
+                                    if (o.isNull("masa_simpan")) null else o.optInt("masa_simpan", 0)
 
-                            produkBaru.add(
-                                Produk(
-                                    id = o.optInt("id", 0),
-                                    nama = o.optString("nama", "-"),
-                                    harga = o.optDouble("harga", 0.0),
-                                    stok = o.optInt("stok", 0),
-                                    satuan = o.optString("satuan", ""),
-                                    isiPerSatuan = o.optInt("isi_per_satuan", 0),
-                                    berat = o.optDouble("berat", 0.0),
-                                    gambarUtama = o.optString("gambar_utama", ""),
-                                    deskripsi = null,
-                                    masaSimpan = null,
-                                    saranPenyimpanan = null,
-                                    saranPenyajian = null
+                                produkBaru.add(
+                                    Produk(
+                                        id = o.optInt("id", 0),
+                                        nama = o.optString("nama", "-"),
+                                        harga = o.optDouble("harga", 0.0),
+                                        stok = o.optInt("stok", 0),
+                                        satuan = o.optString("satuan", ""),
+                                        isiPerSatuan = o.optInt("isi_per_satuan", 0),
+                                        berat = o.optDouble("berat", 0.0),
+                                        gambarUtama = o.optString("gambar_utama", ""),
+                                        deskripsi = o.optString("deskripsi", ""),
+                                        masaSimpan = masaSimpanValue,
+                                        saranPenyimpanan = o.optString("saran_penyimpanan", ""),
+                                        saranPenyajian = o.optString("saran_penyajian", "")
+                                    )
                                 )
-                            )
+                            }
                         }
+
+                        listProduk.clear()
+                        listProduk.addAll(produkBaru)
+                        adapterProduk?.notifyDataSetChanged()
+
+                        b.txtJumlahProduk.text =
+                            if (produkBaru.isEmpty()) "Kosong" else "${produkBaru.size} Produk"
+
+                        b.txtJudulProduk.text =
+                            if (keyword.isEmpty()) "Semua Produk" else "Hasil Pencarian"
+                    } catch (e: Exception) {
+                        b.txtJumlahProduk.text = "Gagal"
                     }
-
-                    // Baru ganti data setelah parsing sukses.
-                    // Jadi nggak ada efek produk tiba-tiba kosong pas reload.
-                    listProduk.clear()
-                    listProduk.addAll(produkBaru)
-                    adapterProduk?.notifyDataSetChanged()
-
-                } catch (e: Exception) {
-                    // Jangan clear list saat parsing error.
-                    // Produk lama tetap tampil.
                 }
             },
             {
                 sedangLoad = false
 
-                if (_b == null || !isAdded) return@StringRequest
-
-                // Jangan clear list saat request gagal.
-                // Produk lama tetap tampil.
+                if (_b != null && isAdded) {
+                    b.txtJumlahProduk.text = "Offline"
+                }
             }
         )
 
@@ -191,6 +218,7 @@ class ProdukFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
         _b = null
     }
 }

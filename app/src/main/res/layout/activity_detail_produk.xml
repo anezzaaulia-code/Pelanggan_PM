@@ -27,9 +27,8 @@
             android:paddingStart="18dp"
             android:paddingTop="18dp"
             android:paddingEnd="18dp"
-            android:paddingBottom="22dp">
+            android:paddingBottom="24dp">
 
-            <!-- Gambar produk -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="245dp"
@@ -53,6 +52,7 @@
                         android:background="@drawable/bg_circle_gold" />
 
                     <TextView
+                        android:id="@+id/txtIconDefault"
                         android:layout_width="92dp"
                         android:layout_height="92dp"
                         android:layout_gravity="center"
@@ -64,9 +64,9 @@
                         android:id="@+id/imgProduk"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:alpha="0"
                         android:contentDescription="Gambar produk"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -86,7 +86,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Info produk -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,17 +116,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="Rp2.000,00"
+                        android:text="Rp2.000"
                         android:textColor="@color/brown_text"
                         android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtRingkasanUlasan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_badge_cream"
+                        android:gravity="center"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="⭐ Belum ada ulasan"
+                        android:textColor="@color/brown_text"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:orientation="vertical"
                         android:background="@drawable/bg_input_cream"
+                        android:orientation="vertical"
                         android:padding="14dp">
 
                         <TextView
@@ -153,7 +166,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Berat: 500.0"
+                            android:text="Berat: 500 gram"
                             android:textColor="@color/text_gray"
                             android:textSize="14sp" />
 
@@ -227,7 +240,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Deskripsi -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -257,10 +269,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="3dp"
                         android:text="Deskripsi produk"
                         android:textColor="@color/text_gray"
-                        android:textSize="14sp"
-                        android:lineSpacingExtra="3dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -276,10 +288,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="3dp"
                         android:text="Simpan di tempat sejuk"
                         android:textColor="@color/text_gray"
-                        android:textSize="14sp"
-                        android:lineSpacingExtra="3dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -295,10 +307,91 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="3dp"
                         android:text="Goreng atau olah sesuai selera"
                         android:textColor="@color/text_gray"
-                        android:textSize="14sp"
-                        android:lineSpacingExtra="3dp" />
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/border_soft"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Ulasan Produk"
+                                android:textColor="@color/text_dark"
+                                android:textSize="21sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtJumlahUlasan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Memuat ulasan..."
+                                android:textColor="@color/text_gray"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_circle_gold_soft"
+                            android:gravity="center"
+                            android:text="⭐"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtUlasanKosong"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:background="@drawable/bg_input_cream"
+                        android:gravity="center"
+                        android:padding="18dp"
+                        android:text="Belum ada ulasan untuk produk ini."
+                        android:textColor="@color/text_gray"
+                        android:textSize="14sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvUlasanProduk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 

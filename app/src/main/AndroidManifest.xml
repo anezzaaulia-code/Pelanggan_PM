@@ -21,6 +21,9 @@
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
 
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -36,9 +39,21 @@
             android:name=".AlamatActivity"
             android:exported="false" />
 
-        <activity android:name=".EditProfilActivity" />
-        <activity android:name=".UlasanActivity" />
-        <activity android:name=".VideoTokoActivity" />
+        <activity
+            android:name=".EditProfilActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".UlasanActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".UlasanSayaActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".VideoTokoActivity"
+            android:exported="false" />
 
         <activity
             android:name=".CheckoutActivity"

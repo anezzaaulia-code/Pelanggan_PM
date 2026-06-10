@@ -1,5 +1,5 @@
 <resources>
-    <!-- Warna utama mengikuti web -->
+    <!-- Warna utama asli project -->
     <color name="cream_primary">#DFBA68</color>
     <color name="cream_primary_dark">#C99F45</color>
     <color name="cream_soft">#FBF1D4</color>
@@ -11,8 +11,9 @@
     <color name="border_soft">#E5E7EB</color>
     <color name="bg_page">#F9FAFB</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
-    <!-- Nama lama tetap dipertahankan biar file lain nggak error -->
+    <!-- Nama lama, jangan dihapus karena masih dipakai di Kotlin/XML -->
     <color name="hijau_tahu">#DFBA68</color>
     <color name="hijau_muda">#FFF8E8</color>
     <color name="kuning_tahu">#DFBA68</color>
@@ -20,4 +21,21 @@
     <color name="putih">#FFFFFF</color>
     <color name="abu">#F9FAFB</color>
     <color name="hitam">#111827</color>
+
+    <!-- Tambahan supaya XML baru tidak error -->
+    <color name="brand">#DFBA68</color>
+    <color name="brand_dark">#5C3B18</color>
+    <color name="brand_soft">#FFF8E8</color>
+    <color name="cream">#FFF8E8</color>
+    <color name="cream_dark">#FBF1D4</color>
+    <color name="card">#FFFFFF</color>
+    <color name="line">#E5E7EB</color>
+    <color name="muted">#6B7280</color>
+    <color name="brown">#5C3B18</color>
+    <color name="text_soft">#6B7280</color>
+    <color name="orange_soft">#F4C27A</color>
+    <color name="red_soft">#FDE2E2</color>
+    <color name="red_dark">#B42318</color>
+    <color name="green_soft">#E3F4E8</color>
+    <color name="green_dark">#285234</color>
 </resources>

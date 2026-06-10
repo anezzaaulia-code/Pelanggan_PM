@@ -3,13 +3,14 @@ package anezza.aulia.pelanggan_pm.adapter
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import anezza.aulia.pelanggan_pm.DetailProdukActivity
 import anezza.aulia.pelanggan_pm.R
 import anezza.aulia.pelanggan_pm.databinding.ItemProdukBinding
 import anezza.aulia.pelanggan_pm.model.Produk
+import com.squareup.picasso.Picasso
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -25,9 +26,7 @@ class ProdukAdapter(
         return ViewHolder(b)
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val p = list[position]
@@ -38,19 +37,23 @@ class ProdukAdapter(
 
         holder.b.txtBadge.text = when {
             p.stok <= 5 -> "Tipis"
-            position % 2 == 0 -> "Baru"
-            else -> "Laris"
+            position == 0 -> "Baru"
+            position == 1 -> "Laris"
+            else -> "Fresh"
         }
 
         if (!p.gambarUtama.isNullOrEmpty()) {
+            holder.b.imgProduk.visibility = View.VISIBLE
+            holder.b.txtIconProduk.visibility = View.GONE
+
             Picasso.get()
                 .load(p.gambarUtama)
                 .placeholder(R.color.hijau_muda)
                 .error(R.color.hijau_muda)
                 .into(holder.b.imgProduk)
         } else {
-            holder.b.imgProduk.setImageResource(0)
-            holder.b.imgProduk.setBackgroundResource(R.color.hijau_muda)
+            holder.b.imgProduk.visibility = View.GONE
+            holder.b.txtIconProduk.visibility = View.VISIBLE
         }
 
         holder.b.btnDetail.setOnClickListener {

@@ -1,10 +1,12 @@
 package anezza.aulia.pelanggan_pm
 
-import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import anezza.aulia.pelanggan_pm.databinding.ActivityMainBinding
 import anezza.aulia.pelanggan_pm.fragment.BerandaFragment
@@ -12,93 +14,96 @@ import anezza.aulia.pelanggan_pm.fragment.KeranjangFragment
 import anezza.aulia.pelanggan_pm.fragment.PesananFragment
 import anezza.aulia.pelanggan_pm.fragment.ProdukFragment
 import anezza.aulia.pelanggan_pm.fragment.ProfilFragment
-import anezza.aulia.pelanggan_pm.helper.SessionManager
-import anezza.aulia.pelanggan_pm.helper.ThemeHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityMainBinding
-    private lateinit var session: SessionManager
 
-    private val berandaFragment = BerandaFragment()
-    private val produkFragment = ProdukFragment()
-    private val keranjangFragment = KeranjangFragment()
-    private val pesananFragment = PesananFragment()
-    private val profilFragment = ProfilFragment()
+    private val warnaAktif by lazy {
+        ContextCompat.getColor(this, R.color.cream_primary_dark)
+    }
 
-    private var activeFragment: Fragment = berandaFragment
+    private val warnaNonAktif by lazy {
+        ContextCompat.getColor(this, R.color.brown_text)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ThemeHelper.applyTheme(this)
         super.onCreate(savedInstanceState)
 
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
 
-        session = SessionManager(this)
+        rapikanSystemNavigationBar()
+        setupBottomNav()
 
-        setupFragments()
-        setupBottomNavigation()
-    }
+        val openTab = intent.getStringExtra("open_tab")
 
-    private fun setupFragments() {
-        supportFragmentManager.beginTransaction()
-            .add(R.id.frameContainer, profilFragment, "profil")
-            .hide(profilFragment)
-            .add(R.id.frameContainer, pesananFragment, "pesanan")
-            .hide(pesananFragment)
-            .add(R.id.frameContainer, keranjangFragment, "keranjang")
-            .hide(keranjangFragment)
-            .add(R.id.frameContainer, produkFragment, "produk")
-            .hide(produkFragment)
-            .add(R.id.frameContainer, berandaFragment, "beranda")
-            .commit()
-
-        activeFragment = berandaFragment
-    }
-
-    private fun setupBottomNavigation() {
-        b.bottomNavigation.selectedItemId = R.id.navBeranda
-
-        b.bottomNavigation.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.navBeranda -> showFragment(berandaFragment)
-                R.id.navProduk -> showFragment(produkFragment)
-                R.id.navKeranjang -> showFragment(keranjangFragment)
-                R.id.navPesanan -> showFragment(pesananFragment)
-                R.id.navProfil -> showFragment(profilFragment)
+        if (savedInstanceState == null) {
+            when (openTab) {
+                "produk" -> bukaFragment(ProdukFragment(), "produk")
+                "keranjang" -> bukaFragment(KeranjangFragment(), "keranjang")
+                "pesanan" -> bukaFragment(PesananFragment(), "pesanan")
+                "profil" -> bukaFragment(ProfilFragment(), "profil")
+                else -> bukaFragment(BerandaFragment(), "beranda")
             }
-            true
+        }
+    }
+
+    private fun rapikanSystemNavigationBar() {
+        window.navigationBarColor = Color.BLACK
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.decorView.systemUiVisibility =
+                window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
         }
     }
 
-    private fun showFragment(fragment: Fragment) {
-        if (fragment == activeFragment) return
+    private fun setupBottomNav() {
+        b.navBeranda.setOnClickListener {
+            bukaFragment(BerandaFragment(), "beranda")
+        }
 
+        b.navProduk.setOnClickListener {
+            bukaFragment(ProdukFragment(), "produk")
+        }
+
+        b.navKeranjang.setOnClickListener {
+            bukaFragment(KeranjangFragment(), "keranjang")
+        }
+
+        b.navPesanan.setOnClickListener {
+            bukaFragment(PesananFragment(), "pesanan")
+        }
+
+        b.navProfil.setOnClickListener {
+            bukaFragment(ProfilFragment(), "profil")
+        }
+    }
+
+    private fun bukaFragment(fragment: Fragment, tab: String) {
         supportFragmentManager.beginTransaction()
-            .hide(activeFragment)
-            .show(fragment)
+            .replace(R.id.frameContainer, fragment)
             .commit()
 
-        activeFragment = fragment
+        setNavAktif(tab)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_options, menu)
-        return true
+    private fun setNavAktif(tab: String) {
+        setItemNav(b.iconBeranda, b.txtBeranda, tab == "beranda")
+        setItemNav(b.iconProduk, b.txtProduk, tab == "produk")
+        setItemNav(b.iconKeranjang, b.txtKeranjang, tab == "keranjang")
+        setItemNav(b.iconPesanan, b.txtPesanan, tab == "pesanan")
+        setItemNav(b.iconProfil, b.txtProfil, tab == "profil")
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menuRefresh -> recreate()
-            R.id.menuLogout -> {
-                session.logout()
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-            }
-        }
-        return true
+    private fun setItemNav(icon: TextView, label: TextView, aktif: Boolean) {
+        val warna = if (aktif) warnaAktif else warnaNonAktif
+        val alpha = if (aktif) 1f else 0.62f
+
+        icon.setTextColor(warna)
+        label.setTextColor(warna)
+
+        icon.alpha = alpha
+        label.alpha = alpha
     }
 }

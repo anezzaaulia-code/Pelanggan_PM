@@ -13,7 +13,7 @@ import anezza.aulia.pelanggan_pm.AlamatActivity
 import anezza.aulia.pelanggan_pm.EditProfilActivity
 import anezza.aulia.pelanggan_pm.LoginActivity
 import anezza.aulia.pelanggan_pm.R
-import anezza.aulia.pelanggan_pm.UlasanActivity
+import anezza.aulia.pelanggan_pm.UlasanSayaActivity
 import anezza.aulia.pelanggan_pm.VideoTokoActivity
 import anezza.aulia.pelanggan_pm.databinding.FragmentProfilBinding
 import anezza.aulia.pelanggan_pm.helper.SessionManager
@@ -67,7 +67,7 @@ class ProfilFragment : Fragment() {
         }
 
         menuUlasan.setOnClickListener {
-            startActivity(Intent(requireContext(), UlasanActivity::class.java))
+            startActivity(Intent(requireContext(), UlasanSayaActivity::class.java))
         }
 
         menuVideo.setOnClickListener {

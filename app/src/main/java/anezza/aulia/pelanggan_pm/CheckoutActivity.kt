@@ -27,7 +27,16 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var session: SessionManager
 
     private val listAlamat = ArrayList<Alamat>()
-    private val ongkirTetap = 5000.0
+
+    private val metodeBayarLabel = arrayListOf(
+        "COD / Bayar di Tempat",
+        "Transfer Bank"
+    )
+
+    private val metodeBayarValue = arrayListOf(
+        "cod",
+        "transfer_bank"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +62,10 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun setupSpinnerPembayaran() {
-        val pembayaran = arrayOf("tunai", "qris")
-
         val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
-            pembayaran
+            metodeBayarLabel
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         b.spMetodeBayar.adapter = adapter
@@ -68,14 +75,15 @@ class CheckoutActivity : AppCompatActivity() {
         b.rbAmbil.isChecked = true
         b.spAlamat.visibility = View.GONE
         b.btnTambahAlamat.visibility = View.GONE
+        b.txtAlamatInfo.text = "Alamat toko akan digunakan untuk metode Ambil di Toko."
 
         b.rgMetode.setOnCheckedChangeListener { _, checkedId ->
             if (checkedId == b.rbKurir.id) {
-                b.txtAlamatInfo.text = "Pilih alamat pengiriman untuk Kurir Toko. Biaya kurir Rp5.000."
+                b.txtAlamatInfo.text = "Pilih alamat pengiriman untuk Kurir Toko. Ongkir mengikuti pengaturan toko."
                 b.spAlamat.visibility = View.VISIBLE
                 b.btnTambahAlamat.visibility = View.VISIBLE
             } else {
-                b.txtAlamatInfo.text = "Alamat toko akan digunakan untuk metode Ambil di Toko. Tidak ada biaya kurir."
+                b.txtAlamatInfo.text = "Alamat toko akan digunakan untuk metode Ambil di Toko."
                 b.spAlamat.visibility = View.GONE
                 b.btnTambahAlamat.visibility = View.GONE
             }
@@ -91,8 +99,6 @@ class CheckoutActivity : AppCompatActivity() {
     private fun tampilRingkasan() {
         val cart = db.getCart()
         val subtotal = db.getTotal()
-        val ongkir = if (::b.isInitialized && b.rbKurir.isChecked) ongkirTetap else 0.0
-        val total = subtotal + ongkir
 
         if (cart.isEmpty()) {
             b.txtInfoKeranjang.text = "Keranjang kosong"
@@ -107,12 +113,17 @@ class CheckoutActivity : AppCompatActivity() {
             ringkasan.append("${it.nama} x ${it.jumlah} = ${formatRupiah(it.harga * it.jumlah)}\n")
         }
 
-        ringkasan.append("\nSubtotal: ${formatRupiah(subtotal)}")
-        ringkasan.append("\nBiaya Kurir: ${formatRupiah(ongkir)}")
+        ringkasan.append("\nSubtotal produk: ${formatRupiah(subtotal)}")
+
+        if (b.rbKurir.isChecked) {
+            ringkasan.append("\nOngkir: dihitung sistem sesuai pengaturan toko")
+        } else {
+            ringkasan.append("\nOngkir: ${formatRupiah(0.0)}")
+        }
 
         b.txtInfoKeranjang.text = "${cart.size} produk siap di-checkout"
         b.txtRingkasan.text = ringkasan.toString()
-        b.txtTotal.text = formatRupiah(total)
+        b.txtTotal.text = formatRupiah(subtotal)
     }
 
     private fun loadAlamat() {
@@ -123,14 +134,14 @@ class CheckoutActivity : AppCompatActivity() {
                 listAlamat.clear()
 
                 val obj = JSONObject(response)
-                val arr = obj.getJSONArray("data")
+                val arr = obj.optJSONArray("data") ?: JSONArray()
                 val namaAlamat = ArrayList<String>()
 
                 for (i in 0 until arr.length()) {
                     val o = arr.getJSONObject(i)
 
                     val alamat = Alamat(
-                        id = o.getInt("id"),
+                        id = o.optInt("id", 0),
                         namaPenerima = o.optString("nama_penerima", ""),
                         telepon = o.optString("telepon", ""),
                         alamatLengkap = o.optString("alamat_lengkap", ""),
@@ -156,7 +167,7 @@ class CheckoutActivity : AppCompatActivity() {
                 )
             },
             {
-                // Ambil di toko tetap bisa jalan meskipun alamat gagal dimuat.
+                // Ambil toko tetap bisa jalan walaupun alamat gagal dimuat.
             }
         ) {
             @Throws(AuthFailureError::class)
@@ -185,7 +196,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         val metodePengambilan = if (b.rbAmbil.isChecked) "ambil_toko" else "kurir_toko"
-        val metodePembayaran = b.spMetodeBayar.selectedItem.toString()
+        val metodePembayaran = metodeBayarValue[b.spMetodeBayar.selectedItemPosition]
 
         var alamatId: Int? = null
 
@@ -218,11 +229,13 @@ class CheckoutActivity : AppCompatActivity() {
         body.put("items", items)
         body.put("metode_pengambilan", metodePengambilan)
         body.put("metode_pembayaran", metodePembayaran)
-        body.put("biaya_pengantaran", if (metodePengambilan == "kurir_toko") ongkirTetap else 0.0)
 
         if (alamatId != null) {
             body.put("alamat_pengiriman_id", alamatId)
         }
+
+        b.btnBuatPesanan.isEnabled = false
+        b.btnBuatPesanan.text = "Memproses..."
 
         val request = object : JsonObjectRequest(
             Method.POST,
@@ -239,10 +252,14 @@ class CheckoutActivity : AppCompatActivity() {
 
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                intent.putExtra("open_tab", "pesanan")
                 startActivity(intent)
                 finish()
             },
             { error ->
+                b.btnBuatPesanan.isEnabled = true
+                b.btnBuatPesanan.text = "Buat Pesanan"
+
                 val msg = error.networkResponse?.data?.let {
                     try {
                         JSONObject(String(it)).optString("message", "Checkout gagal")

@@ -7,5 +7,25 @@ data class Pesanan(
     val total: Double,
     val status: String,
     val statusPembayaran: String,
-    val metodePengambilan: String
+    val metodePengambilan: String,
+    val metodePembayaran: String = "",
+    val items: ArrayList<ItemPesanan> = arrayListOf(),
+    val produkSudahDiulas: ArrayList<Int> = arrayListOf()
+) {
+    fun itemBelumDiulas(): ItemPesanan? {
+        return items.firstOrNull { !produkSudahDiulas.contains(it.produkId) }
+    }
+
+    fun semuaProdukSudahDiulas(): Boolean {
+        return items.isNotEmpty() && items.all { produkSudahDiulas.contains(it.produkId) }
+    }
+}
+
+data class ItemPesanan(
+    val id: Int,
+    val produkId: Int,
+    val namaProduk: String,
+    val jumlah: Int,
+    val hargaSatuan: Double,
+    val subtotal: Double
 )

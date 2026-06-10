@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import anezza.aulia.pelanggan_pm.R
 import anezza.aulia.pelanggan_pm.adapter.ProdukAdapter
 import anezza.aulia.pelanggan_pm.databinding.FragmentBerandaBinding
 import anezza.aulia.pelanggan_pm.helper.ApiConfig
 import anezza.aulia.pelanggan_pm.model.Produk
+import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
@@ -56,36 +56,14 @@ class BerandaFragment : Fragment() {
             loadProduk()
         }
 
-        b.btnLihatProduk.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frameContainer, ProdukFragment())
-                .commit()
-        }
-
-        b.btnInfoToko.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frameContainer, ProfilFragment())
-                .commit()
-        }
-
         b.btnWhatsapp.setOnClickListener {
-            if (nomorWa.isNotEmpty()) {
-                val nomorBersih = nomorWa
-                    .replace("+", "")
-                    .replace(" ", "")
-                    .replace("-", "")
-
-                val url = "https://wa.me/$nomorBersih"
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-            }
+            bukaWhatsapp()
         }
     }
 
     override fun onResume() {
         super.onResume()
 
-        // Jangan reload tiap balik tab.
-        // Cukup load kalau data belum ada.
         if (_b != null && isAdded && listProduk.isEmpty()) {
             loadProduk()
         }
@@ -95,6 +73,20 @@ class BerandaFragment : Fragment() {
         }
     }
 
+    private fun bukaWhatsapp() {
+        if (nomorWa.isEmpty()) return
+
+        val nomorBersih = nomorWa
+            .replace("+", "")
+            .replace(" ", "")
+            .replace("-", "")
+            .replace("(", "")
+            .replace(")", "")
+
+        val url = "https://wa.me/$nomorBersih"
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
     private fun loadStore() {
         if (_b == null || !isAdded) return
         if (sedangLoadStore) return
@@ -102,45 +94,59 @@ class BerandaFragment : Fragment() {
         sedangLoadStore = true
 
         val request = StringRequest(
+            Request.Method.GET,
             ApiConfig.STORE,
             { response ->
                 sedangLoadStore = false
 
-                if (_b == null || !isAdded) return@StringRequest
+                if (_b != null && isAdded) {
+                    try {
+                        val data = JSONObject(response).optJSONObject("data")
 
-                try {
-                    val data = JSONObject(response).optJSONObject("data")
+                        b.txtNamaToko.text =
+                            data?.optString("nama", "Si Tahu") ?: "Si Tahu"
 
-                    b.txtNamaToko.text = data?.optString("nama", "TahuKu") ?: "TahuKu"
-                    b.txtAlamatToko.text = data?.optString("alamat", "Alamat toko belum diisi")
-                        ?: "Alamat toko belum diisi"
-                    b.txtJamToko.text = data?.optString("jam_buka", "07:00") ?: "07:00"
+                        b.txtAlamatToko.text =
+                            data?.optString("alamat", "Alamat toko belum diisi")
+                                ?: "Alamat toko belum diisi"
 
-                    nomorWa = data?.optString("telepon", "") ?: ""
-                    storeSudahLoad = true
+                        val jamBuka = data?.optString("jam_buka", "") ?: ""
+                        val jamTutup = data?.optString("jam_tutup", "") ?: ""
 
-                } catch (e: Exception) {
-                    // Pakai default, jangan crash.
-                    b.txtNamaToko.text = "TahuKu"
-                    b.txtAlamatToko.text = "Alamat toko belum diisi"
-                    b.txtJamToko.text = "07:00"
-                    nomorWa = ""
+                        b.txtJamToko.text =
+                            if (jamBuka.isNotEmpty() && jamTutup.isNotEmpty()) {
+                                "Buka $jamBuka - $jamTutup"
+                            } else {
+                                "Jam operasional belum diisi"
+                            }
+
+                        nomorWa = data?.optString("whatsapp", "")
+                            ?: data?.optString("telepon", "")
+                                    ?: ""
+
+                        storeSudahLoad = true
+                    } catch (e: Exception) {
+                        tampilDefaultToko()
+                    }
                 }
             },
             {
                 sedangLoadStore = false
 
-                if (_b == null || !isAdded) return@StringRequest
-
-                // Default tetap tampil.
-                b.txtNamaToko.text = "TahuKu"
-                b.txtAlamatToko.text = "Alamat toko belum diisi"
-                b.txtJamToko.text = "07:00"
-                nomorWa = ""
+                if (_b != null && isAdded) {
+                    tampilDefaultToko()
+                }
             }
         )
 
         Volley.newRequestQueue(requireContext()).add(request)
+    }
+
+    private fun tampilDefaultToko() {
+        b.txtNamaToko.text = "Si Tahu"
+        b.txtAlamatToko.text = "Alamat toko belum diisi"
+        b.txtJamToko.text = "Jam operasional belum diisi"
+        nomorWa = ""
     }
 
     private fun loadProduk() {
@@ -149,58 +155,64 @@ class BerandaFragment : Fragment() {
 
         sedangLoadProduk = true
 
+        val urlProduk = ApiConfig.PRODUCTS + "?per_page=5"
+
         val request = StringRequest(
-            ApiConfig.PRODUCTS + "?per_page=5",
+            Request.Method.GET,
+            urlProduk,
             { response ->
                 sedangLoadProduk = false
 
-                if (_b == null || !isAdded) return@StringRequest
+                if (_b != null && isAdded) {
+                    try {
+                        val produkBaru = ArrayList<Produk>()
 
-                try {
-                    val produkBaru = ArrayList<Produk>()
+                        val obj = JSONObject(response)
+                        val data = obj.optJSONObject("data")
+                        val arr = data?.optJSONArray("data")
 
-                    val obj = JSONObject(response)
-                    val data = obj.optJSONObject("data")
-                    val arr = data?.optJSONArray("data")
+                        if (arr != null) {
+                            for (i in 0 until arr.length()) {
+                                val o = arr.getJSONObject(i)
 
-                    if (arr != null) {
-                        for (i in 0 until arr.length()) {
-                            val o = arr.getJSONObject(i)
+                                val masaSimpanValue: Int? =
+                                    if (o.isNull("masa_simpan")) {
+                                        null
+                                    } else {
+                                        o.optInt("masa_simpan", 0)
+                                    }
 
-                            produkBaru.add(
-                                Produk(
-                                    id = o.optInt("id", 0),
-                                    nama = o.optString("nama", "-"),
-                                    harga = o.optDouble("harga", 0.0),
-                                    stok = o.optInt("stok", 0),
-                                    satuan = o.optString("satuan", ""),
-                                    isiPerSatuan = o.optInt("isi_per_satuan", 0),
-                                    berat = o.optDouble("berat", 0.0),
-                                    gambarUtama = o.optString("gambar_utama", ""),
-                                    deskripsi = null,
-                                    masaSimpan = null,
-                                    saranPenyimpanan = null,
-                                    saranPenyajian = null
+                                produkBaru.add(
+                                    Produk(
+                                        id = o.optInt("id", 0),
+                                        nama = o.optString("nama", "-"),
+                                        harga = o.optDouble("harga", 0.0),
+                                        stok = o.optInt("stok", 0),
+                                        satuan = o.optString("satuan", ""),
+                                        isiPerSatuan = o.optInt("isi_per_satuan", 0),
+                                        berat = o.optDouble("berat", 0.0),
+                                        gambarUtama = o.optString("gambar_utama", ""),
+                                        deskripsi = o.optString("deskripsi", ""),
+                                        masaSimpan = masaSimpanValue,
+                                        saranPenyimpanan = o.optString("saran_penyimpanan", ""),
+                                        saranPenyajian = o.optString("saran_penyajian", "")
+                                    )
                                 )
-                            )
+                            }
                         }
+
+                        listProduk.clear()
+                        listProduk.addAll(produkBaru)
+                        adapterProduk?.notifyDataSetChanged()
+                    } catch (e: Exception) {
+                        // Jangan clear data lama kalau parsing gagal.
                     }
-
-                    // Ganti data setelah request sukses.
-                    listProduk.clear()
-                    listProduk.addAll(produkBaru)
-                    adapterProduk?.notifyDataSetChanged()
-
-                } catch (e: Exception) {
-                    // Jangan clear data lama.
                 }
             },
             {
                 sedangLoadProduk = false
 
-                if (_b == null || !isAdded) return@StringRequest
-
-                // Jangan clear data lama saat gagal.
+                // Jangan clear data lama kalau request gagal.
             }
         )
 

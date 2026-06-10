@@ -37,6 +37,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtIconProduk"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
@@ -92,22 +93,19 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/btnDetail"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/bg_circle_gold"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
                 android:text="+"
-                android:textAllCaps="false"
-                android:textColor="@color/text_dark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/cream_primary"
-                app:cornerRadius="19dp"
-                app:elevation="0dp" />
+                android:textColor="@color/brown_text"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

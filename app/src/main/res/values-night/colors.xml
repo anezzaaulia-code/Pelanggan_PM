@@ -10,6 +10,7 @@
     <color name="border_soft">#3A3328</color>
     <color name="bg_page">#15110A</color>
     <color name="white">#201A12</color>
+    <color name="black">#000000</color>
 
     <color name="hijau_tahu">#DFBA68</color>
     <color name="hijau_muda">#3A2B16</color>
@@ -18,4 +19,21 @@
     <color name="putih">#201A12</color>
     <color name="abu">#15110A</color>
     <color name="hitam">#FFF8E8</color>
+
+    <!-- Tambahan supaya XML baru tidak error -->
+    <color name="brand">#DFBA68</color>
+    <color name="brand_dark">#F6D98B</color>
+    <color name="brand_soft">#3A2B16</color>
+    <color name="cream">#15110A</color>
+    <color name="cream_dark">#3A2B16</color>
+    <color name="card">#201A12</color>
+    <color name="line">#3A3328</color>
+    <color name="muted">#C8BFAE</color>
+    <color name="brown">#F6D98B</color>
+    <color name="text_soft">#C8BFAE</color>
+    <color name="orange_soft">#F4C27A</color>
+    <color name="red_soft">#3B1D1D</color>
+    <color name="red_dark">#FCA5A5</color>
+    <color name="green_soft">#1F3327</color>
+    <color name="green_dark">#A7F3D0</color>
 </resources>
