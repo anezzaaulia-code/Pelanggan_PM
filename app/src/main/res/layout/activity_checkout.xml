@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootCheckout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cream_light">
+    android:background="@color/cream_light"
+    android:fitsSystemWindows="true">
 
     <View
         android:layout_width="150dp"
@@ -11,7 +13,7 @@
         android:layout_gravity="top|end"
         android:layout_marginTop="-65dp"
         android:layout_marginEnd="-55dp"
-        android:alpha="0.55"
+        android:alpha="0.45"
         android:background="@drawable/bg_circle_gold_soft" />
 
     <LinearLayout
@@ -30,10 +32,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="18dp"
-                android:paddingTop="18dp"
-                android:paddingEnd="18dp"
-                android:paddingBottom="18dp">
+                android:paddingStart="20dp"
+                android:paddingTop="24dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="22dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -61,7 +63,6 @@
                     android:textColor="@color/text_gray"
                     android:textSize="14sp" />
 
-                <!-- Ringkasan Produk -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,7 +103,6 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Metode Pengambilan -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                             android:background="@drawable/bg_note_box"
                             android:lineSpacingExtra="3dp"
                             android:padding="14dp"
-                            android:text="Alamat toko akan digunakan untuk metode Ambil di Toko. Tidak ada biaya kurir."
+                            android:text="Alamat toko akan digunakan untuk metode Ambil di Toko."
                             android:textColor="@color/text_gray"
                             android:textSize="14sp" />
 
@@ -207,7 +207,157 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Metode Pembayaran -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="26dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="@color/border_soft"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="18dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jadwal Pesanan"
+                            android:textColor="@color/text_dark"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:lineSpacingExtra="2dp"
+                            android:text="Pilih tanggal dan jam ambil/kirim pesanan."
+                            android:textColor="@color/text_gray"
+                            android:textSize="13sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Tanggal"
+                                android:textColor="@color/text_gray"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="54dp"
+                                android:layout_marginTop="6dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/txtTanggalPesanan"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/bg_input_cream"
+                                    android:gravity="center_vertical"
+                                    android:paddingStart="14dp"
+                                    android:paddingEnd="14dp"
+                                    android:singleLine="true"
+                                    android:text="Tanggal belum dipilih"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="14sp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnPilihTanggal"
+                                    android:layout_width="104dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="10dp"
+                                    android:insetTop="0dp"
+                                    android:insetBottom="0dp"
+                                    android:minWidth="0dp"
+                                    android:minHeight="0dp"
+                                    android:singleLine="true"
+                                    android:text="Pilih"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/text_dark"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@color/cream_primary"
+                                    app:cornerRadius="18dp"
+                                    app:elevation="0dp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Jam"
+                                android:textColor="@color/text_gray"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="54dp"
+                                android:layout_marginTop="6dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/txtJamPesanan"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/bg_input_cream"
+                                    android:gravity="center_vertical"
+                                    android:paddingStart="14dp"
+                                    android:paddingEnd="14dp"
+                                    android:singleLine="true"
+                                    android:text="Jam belum dipilih"
+                                    android:textColor="@color/text_gray"
+                                    android:textSize="14sp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnPilihJam"
+                                    android:layout_width="104dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="10dp"
+                                    android:insetTop="0dp"
+                                    android:insetBottom="0dp"
+                                    android:minWidth="0dp"
+                                    android:minHeight="0dp"
+                                    android:singleLine="true"
+                                    android:text="Pilih"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/text_dark"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    app:backgroundTint="@color/cream_primary"
+                                    app:cornerRadius="18dp"
+                                    app:elevation="0dp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -242,10 +392,12 @@
                             android:paddingEnd="12dp" />
 
                         <TextView
+                            android:id="@+id/txtInfoPembayaran"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="Pembayaran tersedia: Tunai dan QRIS."
+                            android:lineSpacingExtra="2dp"
+                            android:text="Pembayaran tersedia: COD / tunai dan transfer bank. QR Code digunakan untuk validasi pengambilan pesanan, bukan QRIS."
                             android:textColor="@color/text_gray"
                             android:textSize="13sp" />
 
@@ -253,7 +405,6 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Persetujuan -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -281,7 +432,6 @@
 
         </ScrollView>
 
-        <!-- Bottom Total -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -294,9 +444,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="18dp"
+                android:paddingStart="20dp"
                 android:paddingTop="14dp"
-                android:paddingEnd="18dp"
+                android:paddingEnd="20dp"
                 android:paddingBottom="18dp">
 
                 <LinearLayout

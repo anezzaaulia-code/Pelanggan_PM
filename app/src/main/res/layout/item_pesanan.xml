@@ -66,10 +66,24 @@
             android:textSize="13sp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAksiPesanan"
+            android:id="@+id/btnQrPesanan"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="14dp"
+            android:text="QR Ambil Pesanan"
+            android:textAllCaps="false"
+            android:textColor="@color/text_dark"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:backgroundTint="@color/cream_primary"
+            app:cornerRadius="15dp"
+            app:elevation="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAksiPesanan"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
             android:text="Detail Pesanan"
             android:textAllCaps="false"
             android:textColor="@color/brown"
@@ -77,5 +91,6 @@
             app:backgroundTint="@color/brand"
             app:cornerRadius="15dp"
             app:elevation="0dp" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

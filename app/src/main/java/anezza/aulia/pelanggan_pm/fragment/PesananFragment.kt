@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import anezza.aulia.pelanggan_pm.DetailPesananActivity
+import anezza.aulia.pelanggan_pm.PesananQrActivity
 import anezza.aulia.pelanggan_pm.UlasanActivity
 import anezza.aulia.pelanggan_pm.adapter.PesananAdapter
 import anezza.aulia.pelanggan_pm.databinding.FragmentPesananBinding
@@ -21,6 +23,8 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
+import java.text.NumberFormat
+import java.util.Locale
 
 class PesananFragment : Fragment() {
 
@@ -43,7 +47,6 @@ class PesananFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         session = SessionManager(requireContext())
-
         b.rvPesanan.layoutManager = LinearLayoutManager(requireContext())
 
         loadPesanan()
@@ -68,27 +71,55 @@ class PesananFragment : Fragment() {
 
                         val root = JSONObject(response)
                         val data = root.optJSONObject("data")
-                        val arr = data?.optJSONArray("data") ?: JSONArray()
+
+                        val arr = when {
+                            data?.has("data") == true -> data.optJSONArray("data") ?: JSONArray()
+                            root.has("data") && root.optJSONArray("data") != null -> root.optJSONArray("data") ?: JSONArray()
+                            else -> JSONArray()
+                        }
 
                         for (i in 0 until arr.length()) {
                             val o = arr.getJSONObject(i)
-                            val items = parseItems(o.optJSONArray("item"))
-                            val produkSudahDiulas = parseProdukSudahDiulas(o.optJSONArray("ulasan"))
+
+                            val itemArray = o.optJSONArray("item")
+                                ?: o.optJSONArray("items")
+                                ?: o.optJSONArray("item_pesanan")
+                                ?: JSONArray()
+
+                            val ulasanArray = o.optJSONArray("ulasan")
+                                ?: o.optJSONArray("reviews")
+                                ?: JSONArray()
+
+                            val items = parseItems(itemArray)
+                            val produkSudahDiulas = parseProdukSudahDiulas(ulasanArray)
 
                             val pembayaran = o.optJSONObject("pembayaran")
-                            val metodePembayaran =
-                                pembayaran?.optString("metode_pembayaran", "") ?: ""
+
+                            val metodePembayaran = pembayaran?.optString("metode_pembayaran", "")
+                                ?: o.optString("metode_pembayaran", "")
+
+                            val invoice = o.optString("nomor_invoice", "-")
+
+                            val qrDariApi = pembayaran?.optString("qr_code", "")
+                                ?: o.optString("qr_code", "")
+
+                            val qrFinal = if (qrDariApi.isNotBlank() && qrDariApi != "null") {
+                                qrDariApi
+                            } else {
+                                buatLinkQrPesanan(invoice)
+                            }
 
                             listPesanan.add(
                                 Pesanan(
                                     id = o.optInt("id", 0),
-                                    invoice = o.optString("nomor_invoice", "-"),
+                                    invoice = invoice,
                                     tanggal = o.optString("tanggal_pesanan", "-"),
                                     total = o.optDouble("total_bayar", 0.0),
                                     status = o.optString("status", "-"),
                                     statusPembayaran = o.optString("status_pembayaran", "-"),
                                     metodePengambilan = o.optString("metode_pengambilan", "-"),
                                     metodePembayaran = metodePembayaran,
+                                    qrCode = qrFinal,
                                     items = items,
                                     produkSudahDiulas = produkSudahDiulas
                                 )
@@ -105,18 +136,17 @@ class PesananFragment : Fragment() {
                                 bukaUlasan(pesanan)
                             },
                             onDetail = { pesanan ->
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Invoice: ${pesanan.invoice}\nStatus: ${pesanan.status}",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                bukaDetailPesanan(pesanan)
+                            },
+                            onTampilQr = { pesanan ->
+                                bukaQrPesanan(pesanan)
                             }
                         )
                     } catch (e: Exception) {
                         Toast.makeText(
                             requireContext(),
-                            "Data pesanan gagal dibaca",
-                            Toast.LENGTH_SHORT
+                            "Data pesanan gagal dibaca: ${e.message}",
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -147,10 +177,17 @@ class PesananFragment : Fragment() {
         Volley.newRequestQueue(requireContext()).add(request)
     }
 
+    private fun buatLinkQrPesanan(invoice: String): String {
+        val baseWeb = ApiConfig.BASE_URL.removeSuffix("/api")
+        return "$baseWeb/qr-pesanan/$invoice"
+    }
+
     private fun parseItems(arr: JSONArray?): ArrayList<ItemPesanan> {
         val items = ArrayList<ItemPesanan>()
 
-        if (arr == null) return items
+        if (arr == null) {
+            return items
+        }
 
         for (i in 0 until arr.length()) {
             val item = arr.getJSONObject(i)
@@ -174,7 +211,9 @@ class PesananFragment : Fragment() {
     private fun parseProdukSudahDiulas(arr: JSONArray?): ArrayList<Int> {
         val ids = ArrayList<Int>()
 
-        if (arr == null) return ids
+        if (arr == null) {
+            return ids
+        }
 
         for (i in 0 until arr.length()) {
             val item = arr.getJSONObject(i)
@@ -235,8 +274,12 @@ class PesananFragment : Fragment() {
         val itemBelumDiulas = pesanan.itemBelumDiulas()
 
         if (itemBelumDiulas == null) {
-            Toast.makeText(requireContext(), "Semua produk pada pesanan ini sudah diulas", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                requireContext(),
+                "Semua produk pada pesanan ini sudah diulas",
+                Toast.LENGTH_SHORT
+            ).show()
+
             loadPesanan()
             return
         }
@@ -246,6 +289,79 @@ class PesananFragment : Fragment() {
         intent.putExtra("produk_id", itemBelumDiulas.produkId)
         intent.putExtra("nama_produk", itemBelumDiulas.namaProduk)
         startActivity(intent)
+    }
+
+    private fun bukaQrPesanan(pesanan: Pesanan) {
+        if (!pesanan.bisaTampilQrAmbil()) {
+            Toast.makeText(
+                requireContext(),
+                "QR hanya muncul jika pesanan ambil di toko dan statusnya siap diambil.",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        val qrCodeFinal = if (!pesanan.qrCode.isNullOrBlank()) {
+            pesanan.qrCode
+        } else {
+            buatLinkQrPesanan(pesanan.invoice)
+        }
+
+        val intent = Intent(requireContext(), PesananQrActivity::class.java)
+        intent.putExtra("invoice", pesanan.invoice)
+        intent.putExtra("qr_code", qrCodeFinal)
+        intent.putExtra("status_pesanan", pesanan.status)
+        intent.putExtra("status_pembayaran", pesanan.statusPembayaran)
+        intent.putExtra("total", formatRupiah(pesanan.total))
+        startActivity(intent)
+    }
+
+    private fun bukaDetailPesanan(pesanan: Pesanan) {
+        val intent = Intent(requireContext(), DetailPesananActivity::class.java)
+
+        intent.putExtra("id", pesanan.id)
+        intent.putExtra("invoice", pesanan.invoice)
+        intent.putExtra("tanggal", pesanan.tanggal)
+        intent.putExtra("total", pesanan.total)
+        intent.putExtra("status_pesanan", pesanan.status)
+        intent.putExtra("status_pembayaran", pesanan.statusPembayaran)
+        intent.putExtra("metode_pengambilan", pesanan.metodePengambilan)
+        intent.putExtra("metode_pembayaran", pesanan.metodePembayaran)
+
+        val qrCodeFinal = if (!pesanan.qrCode.isNullOrBlank()) {
+            pesanan.qrCode
+        } else {
+            buatLinkQrPesanan(pesanan.invoice)
+        }
+
+        intent.putExtra("qr_code", qrCodeFinal)
+        intent.putExtra("items_json", buatItemsJson(pesanan))
+
+        startActivity(intent)
+    }
+
+    private fun buatItemsJson(pesanan: Pesanan): String {
+        val arr = JSONArray()
+
+        pesanan.items.forEach { item ->
+            val obj = JSONObject()
+            obj.put("id", item.id)
+            obj.put("produk_id", item.produkId)
+            obj.put("nama_produk", item.namaProduk)
+            obj.put("jumlah", item.jumlah)
+            obj.put("harga_satuan", item.hargaSatuan)
+            obj.put("subtotal", item.subtotal)
+            arr.put(obj)
+        }
+
+        return arr.toString()
+    }
+
+    private fun formatRupiah(value: Double): String {
+        return NumberFormat
+            .getCurrencyInstance(Locale("id", "ID"))
+            .format(value)
+            .replace(",00", "")
     }
 
     override fun onDestroyView() {

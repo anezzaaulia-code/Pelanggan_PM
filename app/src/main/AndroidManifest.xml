@@ -36,6 +36,14 @@
         android:theme="@style/Theme.Pelanggan_PM">
 
         <activity
+            android:name=".DetailPesananActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".PesananQrActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".AlamatActivity"
             android:exported="false" />
 
@@ -78,6 +86,7 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true">
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

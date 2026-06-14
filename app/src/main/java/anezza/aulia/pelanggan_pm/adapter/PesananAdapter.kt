@@ -15,7 +15,8 @@ class PesananAdapter(
     private val list: ArrayList<Pesanan>,
     private val onKonfirmasiDiterima: (Pesanan) -> Unit,
     private val onBeriUlasan: (Pesanan) -> Unit,
-    private val onDetail: (Pesanan) -> Unit
+    private val onDetail: (Pesanan) -> Unit,
+    private val onTampilQr: (Pesanan) -> Unit
 ) : RecyclerView.Adapter<PesananAdapter.ViewHolder>() {
 
     inner class ViewHolder(val b: ItemPesananBinding) : RecyclerView.ViewHolder(b.root)
@@ -40,10 +41,8 @@ class PesananAdapter(
         }
 
         val metodeBayar = when (p.metodePembayaran) {
-            "cod" -> "COD"
+            "cod" -> "Cash / COD"
             "transfer_bank" -> "Transfer Bank"
-            "tunai" -> "Tunai"
-            "qris" -> "QRIS"
             else -> p.metodePembayaran.ifEmpty { "-" }
         }
 
@@ -59,8 +58,36 @@ class PesananAdapter(
         holder.b.txtTotalPesanan.text =
             "Total ${formatRupiah(p.total)} • Pembayaran: ${labelStatus(p.statusPembayaran)}"
 
+        /*
+         * QR muncul khusus pesanan ambil toko yang sudah siap diambil.
+         * QR ini bukan QRIS, tapi QR validasi pengambilan pesanan.
+         */
+        if (p.bisaTampilQrAmbil()) {
+            holder.b.btnQrPesanan.visibility = View.VISIBLE
+            holder.b.btnQrPesanan.setOnClickListener {
+                onTampilQr(p)
+            }
+        } else {
+            holder.b.btnQrPesanan.visibility = View.GONE
+            holder.b.btnQrPesanan.setOnClickListener(null)
+        }
+
+        /*
+         * Tombol aksi utama.
+         * Kalau ambil_toko + siap_diambil, jangan langsung konfirmasi diterima.
+         * Pembeli harus buka QR dulu.
+         */
         when {
-            p.status == "siap_diambil" || p.status == "dalam_pengantaran" -> {
+            p.status == "siap_diambil" && p.metodePengambilan == "ambil_toko" -> {
+                holder.b.btnAksiPesanan.visibility = View.VISIBLE
+                holder.b.btnAksiPesanan.isEnabled = true
+                holder.b.btnAksiPesanan.text = "Lihat Detail"
+                holder.b.btnAksiPesanan.setOnClickListener {
+                    onDetail(p)
+                }
+            }
+
+            p.status == "dalam_pengantaran" -> {
                 holder.b.btnAksiPesanan.visibility = View.VISIBLE
                 holder.b.btnAksiPesanan.isEnabled = true
                 holder.b.btnAksiPesanan.text = "Konfirmasi Diterima"
@@ -107,8 +134,10 @@ class PesananAdapter(
             "dalam_pengantaran" -> "Dalam Pengantaran"
             "selesai" -> "Selesai"
             "dibatalkan" -> "Dibatalkan"
-            "dibayar" -> "Dibayar"
+            "dibayar" -> "Dibayar / Lunas"
             "ditolak" -> "Ditolak"
+            "gagal" -> "Gagal"
+            "kedaluwarsa" -> "Kedaluwarsa"
             else -> status.replace("_", " ").replaceFirstChar { it.uppercase() }
         }
     }

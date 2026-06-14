@@ -9,6 +9,7 @@ data class Pesanan(
     val statusPembayaran: String,
     val metodePengambilan: String,
     val metodePembayaran: String = "",
+    val qrCode: String? = null,
     val items: ArrayList<ItemPesanan> = arrayListOf(),
     val produkSudahDiulas: ArrayList<Int> = arrayListOf()
 ) {
@@ -18,6 +19,11 @@ data class Pesanan(
 
     fun semuaProdukSudahDiulas(): Boolean {
         return items.isNotEmpty() && items.all { produkSudahDiulas.contains(it.produkId) }
+    }
+
+    fun bisaTampilQrAmbil(): Boolean {
+        return metodePengambilan == "ambil_toko"
+                && status == "siap_diambil"
     }
 }
 

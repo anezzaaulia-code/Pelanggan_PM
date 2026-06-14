@@ -1,7 +1,9 @@
 package anezza.aulia.pelanggan_pm.adapter
 
 import android.content.Context
+import android.view.ContextMenu
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +21,54 @@ class CartAdapter(
 
     private val db = CartDbHelper(context)
 
-    inner class ViewHolder(val b: ItemCartBinding) : RecyclerView.ViewHolder(b.root)
+    inner class ViewHolder(val b: ItemCartBinding) : RecyclerView.ViewHolder(b.root),
+        View.OnCreateContextMenuListener {
+
+        override fun onCreateContextMenu(
+            menu: ContextMenu?,
+            view: View?,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
+            val currentPosition = adapterPosition
+
+            if (currentPosition == RecyclerView.NO_POSITION || menu == null) {
+                return
+            }
+
+            val item = list[currentPosition]
+
+            menu.setHeaderTitle(item.nama)
+
+            menu.add("Tambah jumlah").setOnMenuItemClickListener {
+                if (item.jumlah < item.stok) {
+                    item.jumlah++
+                    db.updateJumlah(item.id, item.jumlah)
+                    notifyItemChanged(currentPosition)
+                    onChanged()
+                }
+
+                true
+            }
+
+            menu.add("Kurangi jumlah").setOnMenuItemClickListener {
+                if (item.jumlah > 1) {
+                    item.jumlah--
+                    db.updateJumlah(item.id, item.jumlah)
+                    notifyItemChanged(currentPosition)
+                    onChanged()
+                } else {
+                    hapusItem(currentPosition)
+                }
+
+                true
+            }
+
+            menu.add("Hapus dari keranjang").setOnMenuItemClickListener {
+                hapusItem(currentPosition)
+                true
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val b = ItemCartBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -36,9 +85,14 @@ class CartAdapter(
         holder.b.txtJumlah.text = item.jumlah.toString()
         holder.b.txtSubtotalCart.text = formatRupiah(item.harga * item.jumlah)
 
+        holder.b.root.setOnCreateContextMenuListener(holder)
+
         holder.b.btnPlus.setOnClickListener {
             val currentPosition = holder.adapterPosition
-            if (currentPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            if (currentPosition == RecyclerView.NO_POSITION) {
+                return@setOnClickListener
+            }
 
             val currentItem = list[currentPosition]
 
@@ -53,7 +107,10 @@ class CartAdapter(
 
         holder.b.btnMinus.setOnClickListener {
             val currentPosition = holder.adapterPosition
-            if (currentPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            if (currentPosition == RecyclerView.NO_POSITION) {
+                return@setOnClickListener
+            }
 
             val currentItem = list[currentPosition]
 
@@ -69,15 +126,13 @@ class CartAdapter(
         }
 
         holder.b.root.setOnLongClickListener {
-            val currentPosition = holder.adapterPosition
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                showDeletePopup(holder, currentPosition)
-            }
+            holder.b.root.showContextMenu()
             true
         }
 
         holder.b.txtSubtotalCart.setOnClickListener {
             val currentPosition = holder.adapterPosition
+
             if (currentPosition != RecyclerView.NO_POSITION) {
                 showDeletePopup(holder, currentPosition)
             }
@@ -89,19 +144,26 @@ class CartAdapter(
         popup.menu.add("Hapus dari keranjang")
 
         popup.setOnMenuItemClickListener {
-            val item = list[position]
-
-            db.deleteItem(item.id)
-            list.removeAt(position)
-
-            notifyItemRemoved(position)
-            notifyItemRangeChanged(position, list.size)
-            onChanged()
-
+            hapusItem(position)
             true
         }
 
         popup.show()
+    }
+
+    private fun hapusItem(position: Int) {
+        if (position < 0 || position >= list.size) {
+            return
+        }
+
+        val item = list[position]
+
+        db.deleteItem(item.id)
+        list.removeAt(position)
+
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, list.size)
+        onChanged()
     }
 
     private fun formatRupiah(value: Double): String {
