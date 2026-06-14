@@ -1,7 +1,7 @@
 package anezza.aulia.pelanggan_pm.helper
 
 object ApiConfig {
-    const val BASE_URL = "http://192.168.1.143:8000/api"
+    const val BASE_URL = "http://192.168.1.5:8000/api"
 
     const val HEALTH = "$BASE_URL/health"
 
@@ -14,7 +14,6 @@ object ApiConfig {
     const val PASSWORD = "$BASE_URL/password"
 
     const val STORE = "$BASE_URL/store"
-    const val BANNERS = "$BASE_URL/banners"
 
     const val PRODUCTS = "$BASE_URL/products"
     const val ADDRESSES = "$BASE_URL/addresses"
